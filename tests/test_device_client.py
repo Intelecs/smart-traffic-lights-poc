@@ -29,3 +29,5 @@ class TestDeviceClient(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.device.__disconnect__()
+
+    
