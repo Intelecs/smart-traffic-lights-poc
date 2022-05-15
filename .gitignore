@@ -5,3 +5,8 @@ __pycache__
 dependecies/
 *.egg-info
 *.pyc
+*.db
+images/
+models/
+*.mp4
+*.jpg

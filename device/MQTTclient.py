@@ -50,7 +50,7 @@ class MQTTclient:
     def __disconnect_callback__(self, mid, data):
         self.logger.info(f"Message published - mid: {mid}, data: {data}")
     
-    def __publish__(self, topic: str, payload: dict, qos: int = 0) -> bool:
+    def __publish__(self, topic: str, payload: dict, qos: int = 1) -> bool:
         try:
             self.mqtt_client.publishAsync(topic, json.dumps(payload), qos, self.__on_publish__)
             return True
