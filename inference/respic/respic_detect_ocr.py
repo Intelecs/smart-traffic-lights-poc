@@ -1,10 +1,8 @@
 import numpy as np
 import cv2
 import torch
-
 import easyocr
-import warnings 
-
+import warnings
 
 warnings.filterwarnings("ignore", category=np.VisibleDeprecationWarning) 
 
@@ -69,5 +67,3 @@ def plate_ocr(image_path, model_path):
     text = ocr(image)
     print(text)
     return text
-
-plate_ocr("27.jpeg", "respik.pt")

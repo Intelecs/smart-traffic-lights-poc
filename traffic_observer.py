@@ -330,7 +330,6 @@ if __name__ == '__main__':
             cv2.putText(frame, text, (centroid[0], centroid[1] + 10)
                 , cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1)
             
-
        
         if conf["display"]:
 

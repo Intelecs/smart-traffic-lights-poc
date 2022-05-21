@@ -25,7 +25,7 @@ async def homepage(request):
         image = data['image']
         plate_number = get_plate_number(image)
         print('plate number: ', plate_number)
-        plate_number = "RRT 112"
+        plate_number = "RRT 111"
         payload = {
             "plateNumber": plate_number
         }
