@@ -1,3 +1,10 @@
+import os,sys
+
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(CURRENT_DIR))
+
+
+
 import bluetooth
 from dataclasses import dataclass
 from utils.utils import get_logger

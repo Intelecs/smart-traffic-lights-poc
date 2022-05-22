@@ -1,3 +1,9 @@
+import os,sys
+
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(CURRENT_DIR))
+
+
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 import secrets
 import json
