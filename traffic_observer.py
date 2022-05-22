@@ -6,13 +6,11 @@ sys.path.append(os.path.dirname(CURRENT_DIR))
 
 from imutils.video import FPS
 from datetime import datetime
-from threading import Thread
 from cv_processor.CentroidTracker import CentroidTracker
 from cv_processor.TrackableObject import TrackableObject
 import numpy as np
 import imutils
 import dlib
-import time
 import cv2
 import math
 import json
@@ -23,6 +21,19 @@ from vidgear.gears import VideoGear
 import asyncio
 import requests
 import socket
+
+
+is_raspberry = False
+try:
+    
+    import RPi.GPIO as GPIO
+    GPIO.setWarnings(False)
+    GPIO.setmode(GPIO.BCM)
+    is_raspberry = True
+
+except:
+    logger.error("Not running on Raspberry Pi")
+    is_raspberry = False
 
 config_file = "configs/traffic_observer.json"
 
@@ -320,6 +331,11 @@ if __name__ == '__main__':
             """ _summary_
             Look if the object has violated the speed limit
             """
+
+            if is_raspberry:
+                if GPIO.input(17) == GPIO.HIGH:
+                    # speed_limit_violation = True
+                    pass
 
             _, buffer = cv2.imencode(".jpg", frame)
             image = base64.b64encode(buffer).decode("utf-8")
