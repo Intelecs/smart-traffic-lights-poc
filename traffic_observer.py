@@ -10,7 +10,6 @@ from cv_processor.CentroidTracker import CentroidTracker
 from cv_processor.TrackableObject import TrackableObject
 import numpy as np
 import imutils
-import dlib
 import cv2
 import math
 import json
@@ -19,6 +18,7 @@ from utils.utils import get_logger
 import asyncio
 import requests
 import socket
+import dlib
 
 
 is_raspberry = False
