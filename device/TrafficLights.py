@@ -20,8 +20,8 @@ try:
     GPIO.setmode(GPIO.BCM)
     is_raspberry = True
 
-except:
-    logger.error("Not running on Raspberry Pi")
+except Exception as e:
+    logger.error(f"Not running on Raspberry Pi {e}")
     is_raspberry = False
 
 

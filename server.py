@@ -9,8 +9,6 @@ from starlette.responses import JSONResponse
 import uvicorn
 from inference.kash.plate_ocr import get_plate_number
 from device.MQTTclient import MQTTclient
-import time
-import json
 
 app = Starlette(debug=True)
 
