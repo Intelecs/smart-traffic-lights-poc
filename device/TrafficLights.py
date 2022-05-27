@@ -48,8 +48,8 @@ def traffic_light():
     time.sleep(5)
     traffic_state(0, 0, 1)
     time.sleep(5)
-    traffic_state(1, 0, 0)
-    time.sleep(5)
+    # traffic_state(1, 0, 0)
+    # time.sleep(5)
 
 def run():
     while True:
