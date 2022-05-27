@@ -16,7 +16,6 @@ is_raspberry = False
 try:
     
     import RPi.GPIO as GPIO
-    GPIO.setWarnings(False)
     GPIO.setmode(GPIO.BCM)
     is_raspberry = True
 
