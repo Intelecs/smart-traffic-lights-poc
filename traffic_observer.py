@@ -15,9 +15,7 @@ import cv2
 import math
 import json
 import base64
-import numpy as np
 from utils.utils import get_logger
-from vidgear.gears import VideoGear
 import asyncio
 import requests
 import socket
@@ -27,7 +25,6 @@ is_raspberry = False
 try:
     
     import RPi.GPIO as GPIO
-    GPIO.setWarnings(False)
     GPIO.setmode(GPIO.BCM)
     is_raspberry = True
 
@@ -83,7 +80,7 @@ if __name__ == '__main__':
         conf["model_path"])
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
-    stream = VideoGear(source="cars3.mp4", stabilize=True,).start()
+    stream = cv2.VideoCapture(0)
 
     H = None
     W = None
