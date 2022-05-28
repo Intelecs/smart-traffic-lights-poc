@@ -16,6 +16,7 @@ import json
 import base64
 from utils.utils import get_logger
 import asyncio
+from vidgear.gears import VideoGear
 import requests
 import socket
 import dlib
@@ -80,7 +81,7 @@ if __name__ == '__main__':
         conf["model_path"])
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
-    stream = cv2.VideoCapture(0)
+    stream = VideoGear(source=0, stabilize=True, logging=True).start()
 
     H = None
     W = None
@@ -120,7 +121,8 @@ if __name__ == '__main__':
         
         # set frame dimensions if are empty
         if W is None or H is None:
-            (H, W) = frame.shape[:2]
+            # (H, W) = frame.shape[:2]
+            (H, W) = (480, 640)
             meterPerPixel = conf["distance"] / W
         
         """ _summary_
