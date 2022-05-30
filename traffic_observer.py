@@ -81,7 +81,7 @@ if __name__ == '__main__':
         conf["model_path"])
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
-    stream = VideoGear(source=0, stabilize=True, logging=True).start()
+    stream = VideoGear(source=0, logging=True).start()
 
     H = None
     W = None
