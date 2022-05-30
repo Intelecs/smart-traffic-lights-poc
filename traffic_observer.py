@@ -16,7 +16,7 @@ import json
 import base64
 from utils.utils import get_logger
 import asyncio
-from vidgear.gears import VideoGear
+from vidgear.gears import VideoGear, PiGear
 import requests
 import socket
 import dlib
@@ -81,7 +81,8 @@ if __name__ == '__main__':
         conf["model_path"])
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
-    stream = VideoGear(source=0, stabilize=True, logging=True).start()
+    # stream = VideoGear(source=0, stabilize=True, logging=True).start()
+    stream = PiGear(stabilize=True, logging=True).start()
     # stream = cv2.VideoCapture(0)
 
     H = 460
