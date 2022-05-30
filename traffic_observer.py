@@ -84,8 +84,8 @@ if __name__ == '__main__':
     # stream = VideoGear(source=0, logging=True).start()
     stream = cv2.VideoCapture(0)
 
-    H = None
-    W = None
+    H = 460
+    W = 640
 
     ct = CentroidTracker(maxDisappeared=conf["max_disappear"],
         maxDistance=conf["max_distance"])
@@ -123,7 +123,7 @@ if __name__ == '__main__':
         # set frame dimensions if are empty
         if W is None or H is None:
             # (H, W) = frame.shape[:2]
-            (H, W) = (480, 640)
+            # (H, W) = (480, 640)
             meterPerPixel = conf["distance"] / W
         
         """ _summary_
