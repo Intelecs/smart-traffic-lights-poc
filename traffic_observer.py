@@ -15,12 +15,14 @@ import math
 import json
 import base64
 from utils.utils import get_logger
+from device.TrafficLights import traffic_light
 import asyncio
 from vidgear.gears import VideoGear, PiGear
 import requests
 import socket
 import dlib
 import time
+from threading import Thread
 
 
 is_raspberry = False
@@ -76,7 +78,22 @@ async def send_violation(image):
     await asyncio.sleep(0)
 
 
+def traffic_lights():
+    while True:
+        try:
+            logger.info("Starting Trafiic Lights threading...")
+            traffic_light()
+        except Exception as e:
+            logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
+            continue
+
+
+
 if __name__ == '__main__':
+
+    # Starting Raspberry Pi GPIO
+    Thread(target=traffic_lights).start()
+
 
     net = cv2.dnn.readNetFromCaffe(conf["prototxt_path"],
         conf["model_path"])
