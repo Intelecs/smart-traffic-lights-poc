@@ -17,6 +17,7 @@ import base64
 from utils.utils import get_logger
 import asyncio
 import requests
+from vidgear import VideoGear
 import socket
 import dlib
 
@@ -80,8 +81,8 @@ if __name__ == '__main__':
         conf["model_path"])
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
-    # stream = VideoGear(source=0, logging=True).start()
-    stream = cv2.VideoCapture(0)
+    stream = VideoGear(source=0, logging=True).start()
+    # stream = cv2.VideoCapture(0)
 
     H = 460
     W = 640
@@ -116,7 +117,7 @@ if __name__ == '__main__':
             break
 
 
-        # frame = imutils.resize(frame, width=conf["frame_width"])
+        frame = imutils.resize(frame, width=conf["frame_width"])
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         
         # set frame dimensions if are empty
