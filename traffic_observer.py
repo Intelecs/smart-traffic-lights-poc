@@ -16,7 +16,6 @@ import json
 import base64
 from utils.utils import get_logger
 import asyncio
-from vidgear.gears import VideoGear
 import requests
 import socket
 import dlib
