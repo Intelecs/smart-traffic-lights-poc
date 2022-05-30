@@ -20,6 +20,7 @@ from vidgear.gears import VideoGear, PiGear
 import requests
 import socket
 import dlib
+import time
 
 
 is_raspberry = False
@@ -81,6 +82,7 @@ if __name__ == '__main__':
         conf["model_path"])
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
+    time.sleep(2)
     stream = VideoGear(source=0, stabilize=True, logging=True).start()
     # stream = PiGear(stabilize=True, logging=True).start()
     # stream = cv2.VideoCapture(0)
@@ -370,7 +372,7 @@ if __name__ == '__main__':
        
         if conf["display"]:
 
-            cv2.imshow("Traffict Lighst Observer", frame)
+            cv2.imshow("Smart traffic Light System {}".format(local_ip), frame)
             key = cv2.waitKey(1) & 0xFF
             # if the `q` key is pressed, break from the loop
             if key == ord("q"):
