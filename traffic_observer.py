@@ -117,7 +117,7 @@ if __name__ == '__main__':
             break
 
 
-        frame = imutils.resize(frame, width=conf["frame_width"])
+        # frame = imutils.resize(frame, width=conf["frame_width"])
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         
         # set frame dimensions if are empty
