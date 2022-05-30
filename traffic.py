@@ -133,7 +133,7 @@ if __name__ == '__main__':
         frame = stream.read()
         ts = datetime.now()
 
-        logger.info("Red Ligh status {}".format(GPIO.input(17)))
+        # logger.info("Red Ligh status {}".format(GPIO.input(17)))
 
         if frame is None:
             break
