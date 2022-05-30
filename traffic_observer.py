@@ -354,13 +354,9 @@ if __name__ == '__main__':
                 """
                 if GPIO.input(17) == GPIO.HIGH:
                     # speed_limit_violation = True
-                    pass
-
-            _, buffer = cv2.imencode(".jpg", frame)
-            image = base64.b64encode(buffer).decode("utf-8")
-            asyncio.run(send_violation(image))
-            
-    
+                    _, buffer = cv2.imencode(".jpg", frame)
+                    image = base64.b64encode(buffer).decode("utf-8")
+                    asyncio.run(send_violation(image))
 
             text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)[0]
             text_width, text_height = text_size[0], text_size[1]
