@@ -346,29 +346,29 @@ if __name__ == '__main__':
 
             speed = 0 if to.speedKMPH is None or  math.isnan(to.speedKMPH) else int(to.speedKMPH)
     
-            text = "SPEED {} Km/h".format(speed)
-            # text = "OBJECT {}".format(current_object.objectID)
+            # text = "SPEED {} Km/h".format(speed)
+            text = "OBJECT {}".format(current_object.objectID)
             
             """ _summary_
             Look if the object has violated the speed limit
             """
-            area_3 = [(600, 350), (1050, 350), (850, 250), (500, 250)]
-            for area in [area_3]:
-                cv2.polylines(frame, [np.array(area, np.int32)], True, (15,220,10), 2)
+            # area_3 = [(600, 350), (1050, 350), (850, 250), (500, 250)]
+            # for area in [area_3]:
+            #     cv2.polylines(frame, [np.array(area, np.int32)], True, (15,220,10), 2)
 
-            # Red
-            cv2.circle(
-                frame, (30, 30), 20, (0,0,255), -1
-            )
-            # Yellow  (249, 255, 51)
-            cv2.circle(
-                frame, (30, 80), 20, (51, 255, 249), -1
-            )
+            # # Red
+            # cv2.circle(
+            #     frame, (30, 30), 20, (0,0,255), -1
+            # )
+            # # Yellow  (249, 255, 51)
+            # cv2.circle(
+            #     frame, (30, 80), 20, (51, 255, 249), -1
+            # )
             
-            # Green
-            cv2.circle(
-                frame, (30, 130), 20, (0,128,0), -1
-            )
+            # # Green
+            # cv2.circle(
+            #     frame, (30, 130), 20, (0,128,0), -1
+            # )
 
             if is_raspberry:
                 """ 
@@ -390,8 +390,8 @@ if __name__ == '__main__':
             
        
         if conf["display"]:
-
-            cv2.imshow("Smart traffic Light System {}".format(local_ip), frame)
+            
+            cv2.imshow("Smart traffic Node A {}".format(local_ip), frame)
             key = cv2.waitKey(1) & 0xFF
             # if the `q` key is pressed, break from the loop
             if key == ord("q"):
