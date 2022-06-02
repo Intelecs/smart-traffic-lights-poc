@@ -26,17 +26,19 @@ from threading import Thread
 
 
 is_raspberry = True
+logger = get_logger(name="traffic_observer")
 try:
     
     import RPi.GPIO as GPIO
     GPIO.setmode(GPIO.BCM)
     is_raspberry = True
-except:
+except Exception as e:
+    logger.error(f"Not running on Raspberry Pi {e}")
     is_raspberry = False
 
 config_file = "configs/traffic_observer.json"
 
-logger = get_logger(name="traffic_observer")
+
 
 config = None
 with open(config_file, "r") as f:
