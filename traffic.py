@@ -25,7 +25,7 @@ import time
 from threading import Thread
 
 
-is_raspberry = False
+is_raspberry = True
 try:
     
     import RPi.GPIO as GPIO
