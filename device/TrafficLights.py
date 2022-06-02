@@ -18,7 +18,6 @@ try:
     import RPi.GPIO as GPIO
     GPIO.setmode(GPIO.BCM)
     is_raspberry = True
-
 except Exception as e:
     logger.error(f"Not running on Raspberry Pi {e}")
     is_raspberry = False
