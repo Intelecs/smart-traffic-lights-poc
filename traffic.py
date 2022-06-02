@@ -17,7 +17,7 @@ import base64
 from utils.utils import get_logger
 from device.TrafficLights import traffic_light
 import asyncio
-from vidgear.gears import VideoGear, PiGear
+from vidgear.gears import VideoGear
 import requests
 import socket
 import dlib
@@ -31,7 +31,6 @@ try:
     import RPi.GPIO as GPIO
     GPIO.setmode(GPIO.BCM)
     is_raspberry = True
-
 except:
     is_raspberry = False
 
@@ -100,12 +99,12 @@ if __name__ == '__main__':
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
     time.sleep(2)
-    stream = VideoGear(source=0, stabilize=True, logging=True).start()
+    stream = VideoGear(source=0, stabilize=False, logging=True).start()
     # stream = PiGear(stabilize=True, logging=True).start()
     # stream = cv2.VideoCapture(0)
 
-    H = 460
-    W = 640
+    H = None
+    W = None
 
     ct = CentroidTracker(maxDisappeared=conf["max_disappear"],
         maxDistance=conf["max_distance"])
@@ -144,7 +143,7 @@ if __name__ == '__main__':
         
         # set frame dimensions if are empty
         if W is None or H is None:
-            # (H, W) = frame.shape[:2]
+            (H, W) = frame.shape[:2]
             # (H, W) = (480, 640)
             meterPerPixel = conf["distance"] / W
         
@@ -183,7 +182,7 @@ if __name__ == '__main__':
                     idx = int(detections[0, 0, i, 1])
                     
 
-                    if CLASSES[idx] not in [ "bicycle", "bus", "car", "motorbike", "person", "train"]:
+                    if CLASSES[idx] not in [ "bicycle", "bus", "car", "motorbike", "train", "person"]:
                         continue
                     object_name = CLASSES[idx]
 
@@ -356,19 +355,45 @@ if __name__ == '__main__':
             for area in [area_3]:
                 cv2.polylines(frame, [np.array(area, np.int32)], True, (15,220,10), 2)
 
-            # Red
-            cv2.circle(
-                frame, (30, 30), 20, (0,0,255), -1
-            )
-            # Yellow  (249, 255, 51)
-            cv2.circle(
-                frame, (30, 80), 20, (51, 255, 249), -1
-            )
-            
-            # Green
-            cv2.circle(
-                frame, (30, 130), 20, (0,128,0), -1
-            )
+            if is_raspberry:
+
+                # Red
+                # cv2.circle(
+                #     frame, (30, 30), 20, (0,0,255), -1
+                # )
+                if GPIO.input(17) == GPIO.HIGH:
+                    cv2.circle(
+                        frame, (30, 30), 20, (0,0,255), -1
+                    )
+                else:
+
+                    cv2.circle(
+                    frame, (30, 30), 20, (128,128,128), -1
+                    )
+                
+
+                GREEN_PIN = 27
+                YELLOW_PIN = 22
+                if GPIO.input(22) == GPIO.HIGH:
+                    # Yellow 
+                    cv2.circle(
+                    frame, (30, 80), 20, (51, 255, 249), -1
+                    )
+                else:
+                    cv2.circle(
+                    frame, (30, 80), 20, (128,128,128), -1
+                    )
+                
+                if GPIO.input(27) == GPIO.HIGH:
+                    # Green
+                    cv2.circle(
+                    frame, (30, 130), 20, (0,128,0), -1
+                )
+                else:
+                    cv2.circle(
+                    frame, (30, 130), 20, (128,128,128), -1
+                    )
+                 
 
             if is_raspberry:
                 """ 
