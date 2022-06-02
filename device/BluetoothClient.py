@@ -30,8 +30,7 @@ class BluetoothClient:
     def start_bluetooth(self) -> None:
         self.logger.info("Starting bluetooth...")
 
-    def rfcom_server(self, device):
-        self.logger.info("Connecting to %s", device)
+    def rfcom_server(self):
 
         server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
         server_sock.bind(("", bluetooth.PORT_ANY))
