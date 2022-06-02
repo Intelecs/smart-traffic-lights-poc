@@ -25,19 +25,20 @@ import time
 from threading import Thread
 
 
-is_raspberry = False
+is_raspberry = True
+logger = get_logger(name="traffic_observer")
 try:
     
     import RPi.GPIO as GPIO
     GPIO.setmode(GPIO.BCM)
     is_raspberry = True
-
-except:
+except Exception as e:
+    logger.error(f"Not running on Raspberry Pi {e}")
     is_raspberry = False
 
 config_file = "configs/traffic_observer.json"
 
-logger = get_logger(name="traffic_observer")
+
 
 config = None
 with open(config_file, "r") as f:
@@ -100,12 +101,17 @@ if __name__ == '__main__':
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
     time.sleep(2)
-    stream = VideoGear(source=0, stabilize=True, logging=True).start()
-    # stream = PiGear(stabilize=True, logging=True).start()
+    if is_raspberry:
+        # stream = PiGear( logging=True).start()
+        pass
+    else:
+        pass
+    stream = VideoGear(source=0, stabilize=False, logging=True).start()
+    
     # stream = cv2.VideoCapture(0)
 
-    H = 460
-    W = 640
+    H = None
+    W = None
 
     ct = CentroidTracker(maxDisappeared=conf["max_disappear"],
         maxDistance=conf["max_distance"])
@@ -144,7 +150,7 @@ if __name__ == '__main__':
         
         # set frame dimensions if are empty
         if W is None or H is None:
-            # (H, W) = frame.shape[:2]
+            (H, W) = frame.shape[:2]
             # (H, W) = (480, 640)
             meterPerPixel = conf["distance"] / W
         
@@ -183,7 +189,7 @@ if __name__ == '__main__':
                     idx = int(detections[0, 0, i, 1])
                     
 
-                    if CLASSES[idx] not in [ "bicycle", "bus", "car", "motorbike", "person", "train"]:
+                    if CLASSES[idx] not in [ "bicycle", "bus", "car", "motorbike", "train", "person"]:
                         continue
                     object_name = CLASSES[idx]
 
@@ -352,23 +358,49 @@ if __name__ == '__main__':
             """ _summary_
             Look if the object has violated the speed limit
             """
-            # area_3 = [(600, 350), (1050, 350), (850, 250), (500, 250)]
-            # for area in [area_3]:
-            #     cv2.polylines(frame, [np.array(area, np.int32)], True, (15,220,10), 2)
+            area_3 = [(600, 350), (1050, 350), (850, 250), (500, 250)]
+            for area in [area_3]:
+                cv2.polylines(frame, [np.array(area, np.int32)], True, (15,220,10), 2)
 
-            # # Red
-            # cv2.circle(
-            #     frame, (30, 30), 20, (0,0,255), -1
-            # )
-            # # Yellow  (249, 255, 51)
-            # cv2.circle(
-            #     frame, (30, 80), 20, (51, 255, 249), -1
-            # )
-            
-            # # Green
-            # cv2.circle(
-            #     frame, (30, 130), 20, (0,128,0), -1
-            # )
+            if is_raspberry:
+
+                # Red
+                # cv2.circle(
+                #     frame, (30, 30), 20, (0,0,255), -1
+                # )
+                if GPIO.input(17) == GPIO.HIGH:
+                    cv2.circle(
+                        frame, (30, 30), 20, (0,0,255), -1
+                    )
+                else:
+
+                    cv2.circle(
+                    frame, (30, 30), 20, (128,128,128), -1
+                    )
+                
+
+                GREEN_PIN = 27
+                YELLOW_PIN = 22
+                if GPIO.input(22) == GPIO.HIGH:
+                    # Yellow 
+                    cv2.circle(
+                    frame, (30, 80), 20, (51, 255, 249), -1
+                    )
+                else:
+                    cv2.circle(
+                    frame, (30, 80), 20, (128,128,128), -1
+                    )
+                
+                if GPIO.input(27) == GPIO.HIGH:
+                    # Green
+                    cv2.circle(
+                    frame, (30, 130), 20, (0,128,0), -1
+                )
+                else:
+                    cv2.circle(
+                    frame, (30, 130), 20, (128,128,128), -1
+                    )
+                 
 
             if is_raspberry:
                 """ 

@@ -14,7 +14,6 @@ logger = get_logger(name=__name__)
 
 is_raspberry = False
 try:
-    
     import RPi.GPIO as GPIO
     GPIO.setmode(GPIO.BCM)
     is_raspberry = True
@@ -28,7 +27,6 @@ GREEN_PIN = 27
 YELLOW_PIN = 22
 
 if is_raspberry:
-    GPIO.setmode(GPIO.BCM)
     GPIO.setup(RED_PIN, GPIO.OUT)
     GPIO.setup(GREEN_PIN, GPIO.OUT)
     GPIO.setup(YELLOW_PIN, GPIO.OUT)
