@@ -9,6 +9,10 @@ import bluetooth
 from dataclasses import dataclass
 from utils.utils import get_logger
 
+try:
+    subprocess.Popen(['sudo', 'hciconfig', 'hci0', 'piscan'])
+except Exception as e:
+    pass
 
 uuid: str = "94f39d29-7d6d-437d-973b-fba39e49d4ee"
 
