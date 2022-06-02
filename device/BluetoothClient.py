@@ -19,7 +19,7 @@ class BluetoothClient:
     def get_mac_address(self) -> bool:
         mac_address = bluetooth.read_local_bdaddr()
         self.logger.info("Mac address: %s", mac_address)
-        # return mac_address
+        return mac_address
     
     def start_bluetooth(self) -> None:
         self.logger.info("Starting bluetooth...")
