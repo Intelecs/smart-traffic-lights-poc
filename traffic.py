@@ -102,9 +102,11 @@ if __name__ == '__main__':
 
     time.sleep(2)
     if is_raspberry:
-        stream = PiGear( logging=True).start()
+        # stream = PiGear( logging=True).start()
+        pass
     else:
-        stream = VideoGear(source=0, stabilize=False, logging=True).start()
+        pass
+    stream = VideoGear(source=0, stabilize=False, logging=True).start()
     
     # stream = cv2.VideoCapture(0)
 
