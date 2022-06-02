@@ -17,7 +17,7 @@ import base64
 from utils.utils import get_logger
 from device.TrafficLights import traffic_light
 import asyncio
-from vidgear.gears import VideoGear
+from vidgear.gears import VideoGear, PiGear
 import requests
 import socket
 import dlib
@@ -99,8 +99,11 @@ if __name__ == '__main__':
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
     time.sleep(2)
-    stream = VideoGear(source=0, stabilize=False, logging=True).start()
-    # stream = PiGear(stabilize=True, logging=True).start()
+    if is_raspberry:
+        stream = PiGear( logging=True).start()
+    else:
+        stream = VideoGear(source=0, stabilize=False, logging=True).start()
+    
     # stream = cv2.VideoCapture(0)
 
     H = None
