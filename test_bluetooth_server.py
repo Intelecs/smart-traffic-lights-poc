@@ -60,6 +60,19 @@ except Exception as e:
 
 print("Disconnected.")
 
+
+
+def open_socket():
+    try:
+        while True:
+            print("Starting Server")
+            data = client_sock.recv(1024)
+            if not data:
+                continue
+            print("Received", data)
+    except Exception as e:
+        open_socket()
+
 client_sock.close()
 server_sock.close()
 print("All done.")
