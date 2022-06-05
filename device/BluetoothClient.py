@@ -102,7 +102,7 @@ class BluetoothClient:
         sock.connect((host, port))
 
    
-        sock.send(data.encode())
+        sock.send(data)
         self.logger.info("Sending data...")
         self.logger.info("Sent [%s]", data)
         sock.close()

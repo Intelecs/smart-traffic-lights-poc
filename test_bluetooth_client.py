@@ -10,7 +10,7 @@ print(mac_address)
 
 while True:
     try:
-        bluetooth_client.rfcom_client(b'Hello')
+        bluetooth_client.rfcom_client('Hello')
     except Exception as e:
         print(e)
         continue
