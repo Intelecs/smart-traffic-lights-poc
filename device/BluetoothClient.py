@@ -60,8 +60,7 @@ class BluetoothClient:
         client_sock, client_info = server_sock.accept()
         self.logger.info("Accepted connection from %s", client_info)
 
-        try:
-            while True:
+        while True:
                 try:
                     
                     data = client_sock.send("Hello")
@@ -78,14 +77,7 @@ class BluetoothClient:
                     continue
                     # time.sleep(1)
                     # return
-        except Exception as e:
-            self.logger.info(f"Disconnected {e}", exc_info=True)
-            try:
-                pass
-                
-                
-            except Exception as e:
-                self.logger.info(f"An error occurred while closing sockets: {e}", exc_info=True)
+     
 
         self.logger.info("Finished")
 
