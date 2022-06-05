@@ -61,7 +61,7 @@ class BluetoothClient:
             while True:
                 try:
                 
-                    data = client_sock.recv()
+                    data = client_sock.recv(1024)
                     if not data:
                         continue
                     self.logger.info("received [%s]", data)
