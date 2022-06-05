@@ -60,45 +60,26 @@ class BluetoothClient:
         self.logger.info("Accepted connection from %s", client_info)
 
         try:
-            if len(client_info) > 0:
-                is_server_connected = True
-                while True:
-                    try:
-                        data = client_sock.recv(1024)
-                        self.logger.info("Received data: %s", data)
-                    except Exception as e:
-                        self.logger.info("Error: %s", e)
-                        is_server_connected = False
-                        break
-            else:
-                return
-        except Exception as e:
-            self.logger.error("Error: %s", e)
-            client_sock.close()
-            server_sock.close()
-            self.logger.info(f"Disconnected {e}", exc_info=True)
-
-        # try:
-        #     while True:
-        #         try:
+            while True:
+                try:
                     
-                        
-        #                 if not data:
-        #                     continue
-        #                 self.logger.info("received [%s]", data)
-        #             else:
-        #                 client_sock, client_info = server_sock.accept()
-        #         except Exception as e:
-        #             self.logger.error(f"An error occurred while receiving data: {e}, {client_info}", exc_info=True)
-        #             continue
-        # except Exception as e:
-        #     self.logger.info(f"Disconnected {e}", exc_info=True)
-            
-            # client_sock.close()
-            # server_sock.close()
+                    data = client_sock.recv(1024)
+                    if not data:
+                        continue
+                    self.logger.info("Received [%s]", data)
 
-        
-        
+                except Exception as e:
+                    self.logger.error(f"An error occurred while receiving data: {e}, {client_info}", exc_info=True)
+                    continue
+        except Exception as e:
+            self.logger.info(f"Disconnected {e}", exc_info=True)
+            try:
+                pass
+                # client_sock.close()
+                # server_sock.close()
+            except Exception as e:
+                self.logger.info(f"An error occurred while closing sockets: {e}", exc_info=True)
+
         self.logger.info("Finished")
 
     def rfcom_client(self, data: str):
@@ -124,6 +105,7 @@ class BluetoothClient:
         sock.send(data.encode())
         self.logger.info("Sending data...")
         self.logger.info("Sent [%s]", data)
+        sock.close()
 
 
 
