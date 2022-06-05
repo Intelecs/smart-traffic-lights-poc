@@ -59,20 +59,32 @@ class BluetoothClient:
         self.logger.info("Accepted connection from %s", client_info)
 
         try:
-            while True:
-                try:
-                    if len(client_info) > 0:
-                        data = client_sock.recv(1024)
-                        if not data:
-                            continue
-                        self.logger.info("received [%s]", data)
-                    else:
-                        client_sock, client_info = server_sock.accept()
-                except Exception as e:
-                    self.logger.error(f"An error occurred while receiving data: {e}, {client_info}", exc_info=True)
-                    continue
+            if len(client_info) > 0:
+                data = client_sock.recv(1024)
+                self.logger.info("Received data: %s", data)
+            else:
+                client_sock, client_info = server_sock.accept()
         except Exception as e:
+            self.logger.error("Error: %s", e)
+            client_sock.close()
+            server_sock.close()
             self.logger.info(f"Disconnected {e}", exc_info=True)
+
+        # try:
+        #     while True:
+        #         try:
+                    
+                        
+        #                 if not data:
+        #                     continue
+        #                 self.logger.info("received [%s]", data)
+        #             else:
+        #                 client_sock, client_info = server_sock.accept()
+        #         except Exception as e:
+        #             self.logger.error(f"An error occurred while receiving data: {e}, {client_info}", exc_info=True)
+        #             continue
+        # except Exception as e:
+        #     self.logger.info(f"Disconnected {e}", exc_info=True)
             
             # client_sock.close()
             # server_sock.close()
