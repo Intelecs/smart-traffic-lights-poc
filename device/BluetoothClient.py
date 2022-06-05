@@ -75,6 +75,7 @@ class BluetoothClient:
                     client_sock.close()
                     server_sock.close()
                     client_sock, client_info = server_sock.accept()
+                    continue
                     # time.sleep(1)
                     # return
         except Exception as e:
