@@ -20,6 +20,7 @@ uuid: str = "94f39d29-7d6d-437d-973b-fba39e49d4ee"
 class BluetoothClient:
     logger = get_logger(name=__name__)
     is_ble: bool = False
+    is_server_connected: bool = False
 
     def get_mac_address(self) -> bool:
         mac_address = bluetooth.read_local_bdaddr()
@@ -60,10 +61,17 @@ class BluetoothClient:
 
         try:
             if len(client_info) > 0:
-                data = client_sock.recv(1024)
-                self.logger.info("Received data: %s", data)
+                is_server_connected = True
+                while True:
+                    try:
+                        data = client_sock.recv(1024)
+                        self.logger.info("Received data: %s", data)
+                    except Exception as e:
+                        self.logger.info("Error: %s", e)
+                        is_server_connected = False
+                        break
             else:
-                client_sock, client_info = server_sock.accept()
+                return
         except Exception as e:
             self.logger.error("Error: %s", e)
             client_sock.close()
