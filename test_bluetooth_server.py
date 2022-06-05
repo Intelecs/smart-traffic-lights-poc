@@ -53,10 +53,10 @@ try:
     while True:
         data = client_sock.recv(1024)
         if not data:
-            break
+            continue
         print("Received", data)
-except OSError:
-    pass
+except Exception as e:
+    print(e)
 
 print("Disconnected.")
 
