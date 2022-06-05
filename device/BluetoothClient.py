@@ -1,4 +1,7 @@
 import os, sys
+from pydoc import cli
+
+from torch import le
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
@@ -54,17 +57,20 @@ class BluetoothClient:
 
         self.logger.info("Waiting for connection on %d", port)
 
+        client_sock, client_info = None, None
         client_sock, client_info = server_sock.accept()
         self.logger.info("Accepted connection from %s", client_info)
 
         try:
             while True:
                 try:
-                
-                    data = client_sock.recv(1024)
-                    if not data:
-                        continue
-                    self.logger.info("received [%s]", data)
+                    if len(client_info) > 0:
+                        data = client_sock.recv(1024)
+                        if not data:
+                            continue
+                        self.logger.info("received [%s]", data)
+                    else:
+                        client_sock, client_info = server_sock.accept()
                 except Exception as e:
                     self.logger.error(f"An error occurred while receiving data: {e}, {client_info}", exc_info=True)
                     continue
@@ -97,19 +103,10 @@ class BluetoothClient:
         sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
         sock.connect((host, port))
 
-        while True:
-            try:
-                sock.send(data.encode())
-                self.logger.info("Sending data...")
-                self.logger.info("Sent [%s]", data)
-            except Exception as e:
-                self.logger.error(f"An error occurred while sending data: {e}", exc_info=True)
-                continue
-
-        
+   
         sock.send(data.encode())
-
-        self.logger.info("Waiting for data...")
+        self.logger.info("Sending data...")
+        self.logger.info("Sent [%s]", data)
 
 
 
