@@ -26,7 +26,7 @@ class BluetoothClient:
         self.logger.info("Mac address: %s", mac_address[0])
         return mac_address[0]
 
-    def near_by_devices(self) -> List[str]:
+    def nearby_devices(self) -> List[str]:
         nearby_devices = bluetooth.discover_devices(lookup_names=True, flush_cache=True)
         self.logger.info("Found %d devices", len(nearby_devices))
         return nearby_devices
