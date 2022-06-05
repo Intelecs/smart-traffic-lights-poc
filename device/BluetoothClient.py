@@ -59,15 +59,22 @@ class BluetoothClient:
 
         try:
             while True:
-                data = client_sock.recv(1024)
-                if not data:
-                    break
-                self.logger.info("received [%s]", data)
+                try:
+                    
+                    data = client_sock.recv(1024)
+                    if not data:
+                        break
+                    self.logger.info("received [%s]", data)
+                except Exception as e:
+                    self.logger.error(f"An error occurred while receiving data: {e}")
+                    continue
         except Exception as e:
             self.logger.info(f"Disconnected {e}", exc_info=True)
+            client_sock.close()
+            server_sock.close()
 
-        client_sock.close()
-        server_sock.close()
+        
+        
         self.logger.info("Finished")
 
     def rfcom_client(self, data: str):
