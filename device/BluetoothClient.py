@@ -97,7 +97,16 @@ class BluetoothClient:
         sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
         sock.connect((host, port))
 
-        self.logger.info("Sending data...")
+        while True:
+            try:
+                sock.send(data.encode())
+                self.logger.info("Sending data...")
+                self.logger.info("Sent [%s]", data)
+            except Exception as e:
+                self.logger.error(f"An error occurred while sending data: {e}", exc_info=True)
+                continue
+
+        
         sock.send(data.encode())
 
         self.logger.info("Waiting for data...")
