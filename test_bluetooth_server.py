@@ -46,23 +46,14 @@ bluetooth.advertise_service(server_sock, "SampleServer", service_id=uuid,
 
 print("Waiting for connection on RFCOMM channel", port)
 
-client_sock, client_info = server_sock.accept()
-print("Accepted connection from", client_info)
 
-try:
-    while True:
-        data = client_sock.recv(1024)
-        if not data:
-            continue
-        print("Received", data)
-except Exception as e:
-    print(e)
 
-print("Disconnected.")
 
 
 
 def open_socket():
+    client_sock, client_info = server_sock.accept()
+    print("Accepted connection from", client_info)
     try:
         while True:
             print("Starting Server")
@@ -71,10 +62,12 @@ def open_socket():
                 continue
             print("Received", data)
     except Exception as e:
+        client_sock.close()
+        server_sock.close()
         open_socket()
 
 open_socket()
 
-client_sock.close()
-server_sock.close()
-print("All done.")
+
+# server_sock.close()
+# print("All done.")
