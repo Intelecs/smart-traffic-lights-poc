@@ -1,4 +1,5 @@
 import os, sys
+import time
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
@@ -64,20 +65,24 @@ class BluetoothClient:
                 try:
                     
                     data = client_sock.send("Hello")
+                    time.sleep(0.1)
                     if not data:
                         continue
                     self.logger.info("Received [%s]", data)
 
                 except Exception as e:
                     self.logger.error(f"An error occurred while receiving data: {e}, {client_info}", exc_info=True)
+                    client_sock.close()
+                    server_sock.close()
                     client_sock, client_info = server_sock.accept()
+                    # time.sleep(1)
                     # return
         except Exception as e:
             self.logger.info(f"Disconnected {e}", exc_info=True)
             try:
                 pass
-                # client_sock.close()
-                # server_sock.close()
+                
+                
             except Exception as e:
                 self.logger.info(f"An error occurred while closing sockets: {e}", exc_info=True)
 
