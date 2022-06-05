@@ -73,6 +73,8 @@ def open_socket():
     except Exception as e:
         open_socket()
 
+open_socket()
+
 client_sock.close()
 server_sock.close()
 print("All done.")
