@@ -30,4 +30,4 @@ async def send_signal(image):
 
 if __name__ == '__main__':
     while True:
-        asyncio.ensure_future(send_signal("RED"))
+        asyncio.run(send_signal("RED"))
