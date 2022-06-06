@@ -12,9 +12,9 @@ local_ip = sock.getsockname()[0]
 sock.close()
 
 nmap_scanner = nmap.PortScanner()
-nmap_scanner.scan(local_ip, '80-9000')
+scan_range = nmap_scanner.scan(hosts=["192.168.0.28"],)
 
-print(nmap_scanner.all_hosts())
+print(scan_range['scan'])
 
 
 # async def violation_api(image):
