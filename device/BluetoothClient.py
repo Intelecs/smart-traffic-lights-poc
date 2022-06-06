@@ -9,6 +9,7 @@ from typing import List
 import bluetooth
 from dataclasses import dataclass
 from utils.utils import get_logger
+import socket
 
 try:
     subprocess.Popen(["sudo", "hciconfig", "hci0", "piscan"])
@@ -43,6 +44,8 @@ class BluetoothClient:
         while True:
             try:
                 self.server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+                _sock = socket.fromfd(self.bluetooth_socket.fileno(), 31, 1, 3)
+                _sock.settimeout(5)
                 self.server_sock.bind(("", bluetooth.PORT_ANY))
                 self.server_sock.listen(1)
                 bluetooth.advertise_service(
