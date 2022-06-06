@@ -64,11 +64,11 @@ class BluetoothClient:
 
     def rfcom_server(self):
 
-        # self.server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-        # self.server_sock.bind(("", bluetooth.PORT_ANY))
-        # self.server_sock.listen(1)
+        self.server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+        self.server_sock.bind(("", bluetooth.PORT_ANY))
+        self.server_sock.listen(1)
         self.logger.info("Waiting for connection...")
-        self.connect()
+        # self.connect()
 
         port = self.server_sock.getsockname()[1]
         self.logger.info("Listening on port %d", port)
