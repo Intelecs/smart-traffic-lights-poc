@@ -1,4 +1,5 @@
 import asyncio
+
 from utils.utils import get_logger
 import requests
 import socket
@@ -15,11 +16,12 @@ print(local_ip)
 nmap_scanner = nmap.PortScanner()
 scan_range = nmap_scanner.scan(hosts="192.168.100.0-100", arguments="-p 8000 --open")
 
+ip_addresss = None
 if len(scan_range) > 0:
     print(scan_range)
-
-    for items in scan_range["scan"].items():
-        print(items)
+    ip_address = scan_range['scan'].keys()[0]
+    print(ip_address)
+    
 
 
 # async def violation_api(image):
