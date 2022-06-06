@@ -22,6 +22,7 @@ class BluetoothClient:
     logger = get_logger(name=__name__)
     is_ble: bool = False
     is_server_connected: bool = False
+    server_sock = None
 
     def get_mac_address(self) -> bool:
         mac_address = bluetooth.read_local_bdaddr()
@@ -35,20 +36,36 @@ class BluetoothClient:
 
     def start_bluetooth(self) -> None:
         self.logger.info("Starting bluetooth...")
+    
+    def connect(self) -> None:
+        self.logger.info("Connecting to....",)
+        while True:
+            try:
+                self.server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+                self.server_sock.bind(("", bluetooth.PORT_ANY))
+                self.server_sock.listen(1)
+            except Exception as e:
+                self.logger.error(e)
+                self.server_sock.close()
+                self.logger.info("Waiting for connection...")
+                continue
+            
 
     def rfcom_server(self):
 
-        server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-        server_sock.bind(("", bluetooth.PORT_ANY))
-        server_sock.listen(1)
+        # self.server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+        # self.server_sock.bind(("", bluetooth.PORT_ANY))
+        # self.server_sock.listen(1)
+        self.logger.info("Waiting for connection...")
+        self.connect()
 
-        port = server_sock.getsockname()[1]
+        port = self.server_sock.getsockname()[1]
         self.logger.info("Listening on port %d", port)
 
         
         bluetooth.advertise_service(
-            server_sock,
-            "Smart Trafic",
+            self.server_sock,
+            "Smart Trafic Server",
             service_id=uuid,
             service_classes=[uuid, bluetooth.SERIAL_PORT_CLASS],
             profiles=[bluetooth.SERIAL_PORT_PROFILE],
@@ -57,29 +74,26 @@ class BluetoothClient:
         self.logger.info("Waiting for connection on %d", port)
 
         client_sock, client_info = None, None
-        client_sock, client_info = server_sock.accept()
+        client_sock, client_info = self.server_sock.accept()
         self.logger.info("Accepted connection from %s", client_info)
 
         while True:
-                try:
-                    
-                    data = client_sock.send("Hello")
-                    time.sleep(0.1)
-                    if not data:
-                        continue
-                    self.logger.info("Received [%s]", data)
-
-                except Exception as e:
-                    self.logger.error(f"An error occurred while receiving data: {e}, {client_info}", exc_info=True)
-                    client_sock.close()
-                    server_sock.close()
-                    client_sock, client_info = server_sock.accept()
+            try:
+                
+                data = client_sock.send("Hello")
+                time.sleep(0.1)
+                if not data:
                     continue
-                    # time.sleep(1)
-                    # return
+                self.logger.info("Received [%s]", data)
+            except Exception as e:
+                self.logger.error(f"An error occurred while receiving data: {e}, {client_info}", exc_info=True)
+                client_sock.close()
+                self.server_sock.close()
+                self.connect()
+                continue
+                # time.sleep(1)
+                # return
      
-
-        self.logger.info("Finished")
 
     def rfcom_client(self, data: str):
         self.logger.info("Starting client...")
