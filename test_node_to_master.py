@@ -11,8 +11,9 @@ sock.connect(("8.8.8.8", 8000))
 local_ip = sock.getsockname()[0]
 sock.close()
 
+print(local_ip)
 nmap_scanner = nmap.PortScanner()
-scan_range = nmap_scanner.scan(hosts="192.168.*.0-100",)
+scan_range = nmap_scanner.scan(hosts="192.168.100.0-100", arguments="-p 8000 --open")
 
 print(scan_range['scan'])
 
