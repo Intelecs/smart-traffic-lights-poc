@@ -2,18 +2,19 @@ import asyncio
 from utils.utils import get_logger
 import requests
 import socket
+import nmap
 
 logger = get_logger(name=__name__)
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.connect(("8.8.8.8", 8000))
 local_ip = sock.getsockname()[0]
-# sock.close()
+sock.close()
 
-remote_ip = sock.gethostbyname('raspberrypi')
-print(remote_ip)
+nmap_scanner = nmap.PortScanner()
+nmap_scanner.scan(local_ip, '80-9000')
 
-
+print(nmap_scanner.all_hosts())
 
 
 # async def violation_api(image):
