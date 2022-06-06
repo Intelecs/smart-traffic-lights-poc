@@ -11,11 +11,12 @@ from dataclasses import dataclass
 from utils.utils import get_logger
 
 try:
-    subprocess.Popen(['sudo', 'hciconfig', 'hci0', 'piscan'])
+    subprocess.Popen(["sudo", "hciconfig", "hci0", "piscan"])
 except Exception as e:
     pass
 
 uuid: str = "94f39d29-7d6d-437d-973b-fba39e49d4ee"
+
 
 @dataclass
 class BluetoothClient:
@@ -36,7 +37,7 @@ class BluetoothClient:
 
     def start_bluetooth(self) -> None:
         self.logger.info("Starting bluetooth...")
-    
+
     def connect(self) -> None:
         self.logger.info("Connecting to....",)
         while True:
@@ -44,13 +45,19 @@ class BluetoothClient:
                 self.server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
                 self.server_sock.bind(("", bluetooth.PORT_ANY))
                 self.server_sock.listen(1)
+                bluetooth.advertise_service(
+                    self.server_sock,
+                    "Smart Trafic Server",
+                    service_id=uuid,
+                    service_classes=[uuid, bluetooth.SERIAL_PORT_CLASS],
+                    profiles=[bluetooth.SERIAL_PORT_PROFILE],
+                )
                 break
             except Exception as e:
                 self.logger.error(e)
                 # self.server_sock.close()
                 self.logger.info("Waiting for connection...")
                 continue
-            
 
     def rfcom_server(self):
 
@@ -63,15 +70,6 @@ class BluetoothClient:
         port = self.server_sock.getsockname()[1]
         self.logger.info("Listening on port %d", port)
 
-        
-        bluetooth.advertise_service(
-            self.server_sock,
-            "Smart Trafic Server",
-            service_id=uuid,
-            service_classes=[uuid, bluetooth.SERIAL_PORT_CLASS],
-            profiles=[bluetooth.SERIAL_PORT_PROFILE],
-        )
-
         self.logger.info("Waiting for connection on %d", port)
 
         client_sock, client_info = None, None
@@ -80,21 +78,23 @@ class BluetoothClient:
 
         while True:
             try:
-                
+
                 data = client_sock.send("Hello")
                 time.sleep(0.1)
                 if not data:
                     continue
                 self.logger.info("Received [%s]", data)
             except Exception as e:
-                self.logger.error(f"An error occurred while receiving data: {e}, {client_info}", exc_info=True)
+                self.logger.error(
+                    f"An error occurred while receiving data: {e}, {client_info}",
+                    exc_info=True,
+                )
                 client_sock.close()
                 self.server_sock.close()
                 self.connect()
                 continue
                 # time.sleep(1)
                 # return
-     
 
     def rfcom_client(self, data: str):
         self.logger.info("Starting client...")
@@ -104,22 +104,18 @@ class BluetoothClient:
         if len(service_matches) == 0:
             self.logger.info("Couldn't find the service")
             return
-        
+
         first_match = service_matches[0]
         port = first_match["port"]
         name = first_match["name"]
         host = first_match["host"]
 
-        self.logger.info("Connecting to \"%s\" on %s:%s" % (name, host, port))
+        self.logger.info('Connecting to "%s" on %s:%s' % (name, host, port))
 
         sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
         sock.connect((host, port))
 
-   
         received = sock.recv(1024)
         self.logger.info("Sending data...")
         self.logger.info("Sent [%s]", received)
         sock.close()
-
-
-
