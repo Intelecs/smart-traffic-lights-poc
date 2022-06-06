@@ -28,7 +28,7 @@ async def violation_api(image):
         logger.info("No ip address found connected to the network")
         return
     logger.info("Connecting to %s", ip_address)
-    url = f"http://{ip_address}:8000/violations"
+    url = f"http://{ip_address}:8000/traffic"
     headers = {'Content-Type': 'application/json'}
     data = {
         "right": image
