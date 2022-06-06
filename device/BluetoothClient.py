@@ -44,6 +44,7 @@ class BluetoothClient:
                 self.server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
                 self.server_sock.bind(("", bluetooth.PORT_ANY))
                 self.server_sock.listen(1)
+                break
             except Exception as e:
                 self.logger.error(e)
                 # self.server_sock.close()
