@@ -18,8 +18,7 @@ scan_range = nmap_scanner.scan(hosts="192.168.100.0-100", arguments="-p 8000 --o
 
 ip_addresss = None
 if len(scan_range) > 0:
-    print(scan_range)
-    ip_address = scan_range['scan'].keys()[0]
+    ip_address = list(scan_range['scan'].keys())[0]
     print(ip_address)
     
 
