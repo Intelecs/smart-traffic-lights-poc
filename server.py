@@ -48,10 +48,12 @@ async def traffic(request):
         data = await request.json()
 
         logger.info(f'Received data {data}')
+        return JSONResponse({'message': ''})
         
     except Exception as e:
         logger.error(f"Error processing a payload {e}")
         return JSONResponse({'error': 'Invalid request'})
+    return JSONResponse({'message': 'Hello World!'})
 
 
 if __name__ == '__main__':
