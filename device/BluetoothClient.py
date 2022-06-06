@@ -44,7 +44,7 @@ class BluetoothClient:
         while True:
             try:
                 self.server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-                _sock = socket.fromfd(self.bluetooth_socket.fileno(), 31, 1, 3)
+                _sock = socket.fromfd(self.self.server_socket.fileno(), 31, 1, 3)
                 _sock.settimeout(5)
                 self.server_sock.bind(("", bluetooth.PORT_ANY))
                 self.server_sock.listen(1)
