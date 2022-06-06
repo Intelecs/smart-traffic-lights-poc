@@ -12,7 +12,7 @@ local_ip = sock.getsockname()[0]
 sock.close()
 
 nmap_scanner = nmap.PortScanner()
-scan_range = nmap_scanner.scan(hosts="192.168.0.0-100",)
+scan_range = nmap_scanner.scan(hosts="192.168.*.0-100",)
 
 print(scan_range['scan'])
 
