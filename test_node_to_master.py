@@ -16,30 +16,34 @@ print(local_ip)
 nmap_scanner = nmap.PortScanner()
 scan_range = nmap_scanner.scan(hosts="192.168.100.0-100", arguments="-p 8000 --open")
 
-ip_addresss = None
+ip_address = None
 if len(scan_range) > 0:
     ip_address = list(scan_range['scan'].keys())[0]
     print(ip_address)
     
 
 
-# async def violation_api(image):
-#     url = f"http://{local_ip}:8000/violations"
-#     headers = {'Content-Type': 'application/json'}
-#     data = {
-#         "right": image
-#     }
-#     try:
-#         requests.post(url, json=data, headers=headers)
-#         logger.info(f"Violation sent to {url}")
-#     except Exception as e:
-#         logger.error(f"Error sending violation to {url}")
-#         logger.error(e)
+async def violation_api(image):
+    if ip_address is None:
+        logger.info("No ip address found connected to the network")
+        return
+    logger.info("Connecting to %s", ip_address)
+    url = f"http://{ip_address}:8000/violations"
+    headers = {'Content-Type': 'application/json'}
+    data = {
+        "right": image
+    }
+    try:
+        requests.post(url, json=data, headers=headers)
+        logger.info(f"Violation sent to {url}")
+    except Exception as e:
+        logger.error(f"Error sending violation to {url}")
+        logger.error(e)
 
-# async def send_signal(image):
-#     asyncio.ensure_future(violation_api(image))
-#     await asyncio.sleep(0)
+async def send_signal(image):
+    asyncio.ensure_future(violation_api(image))
+    await asyncio.sleep(0)
 
-# if __name__ == '__main__':
-#     while True:
-#         asyncio.run(send_signal("RED"))
+if __name__ == '__main__':
+    while True:
+        asyncio.run(send_signal("RED"))
