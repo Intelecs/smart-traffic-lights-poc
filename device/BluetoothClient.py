@@ -46,7 +46,7 @@ class BluetoothClient:
                 self.server_sock.listen(1)
             except Exception as e:
                 self.logger.error(e)
-                self.server_sock.close()
+                # self.server_sock.close()
                 self.logger.info("Waiting for connection...")
                 continue
             
