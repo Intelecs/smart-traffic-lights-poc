@@ -18,7 +18,8 @@ scan_range = nmap_scanner.scan(hosts="192.168.100.0-100", arguments="-p 8000 --o
 if len(scan_range) > 0:
     print(scan_range)
 
-print(scan_range['scan'].items(), len(scan_range['scan']))
+    for items in scan_range["scan"].items():
+        print(items)
 
 
 # async def violation_api(image):
