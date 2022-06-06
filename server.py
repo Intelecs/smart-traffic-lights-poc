@@ -43,7 +43,7 @@ async def homepage(request):
     return JSONResponse({'message': 'Hello World!'})
 
 @app.route('/traffic', methods=['POST'])
-async def homepage(request):
+async def traffic(request):
     try:
         data = await request.json()
 
