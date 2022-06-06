@@ -22,7 +22,7 @@ class BluetoothClient:
     logger = get_logger(name=__name__)
     is_ble: bool = False
     is_server_connected: bool = False
-    server_sock = None
+    server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 
     def get_mac_address(self) -> bool:
         mac_address = bluetooth.read_local_bdaddr()
