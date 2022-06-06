@@ -9,8 +9,11 @@ from starlette.responses import JSONResponse
 import uvicorn
 from inference.kash.plate_ocr import get_plate_number
 from device.MQTTclient import MQTTclient
+from utils.utils import get_logger
 
 app = Starlette(debug=True)
+
+logger = get_logger(name=__name__)
 
 mqtt_client = MQTTclient(
     host="axwsbhnc43ml1-ats.iot.eu-west-1.amazonaws.com",
@@ -35,9 +38,20 @@ async def homepage(request):
         }
         mqtt_client.__publish__("traffic/A/violations", payload)
     except Exception as e:
-        print(e)
+        logger.error(f"Error processing a payload {e}")
         return JSONResponse({'error': 'Invalid request'})
     return JSONResponse({'message': 'Hello World!'})
+
+@app.route('/traffic', methods=['POST'])
+async def homepage(request):
+    try:
+        data = await request.json()
+
+        logger.info(f'Received data {data}')
+        
+    except Exception as e:
+        logger.error(f"Error processing a payload {e}")
+        return JSONResponse({'error': 'Invalid request'})
 
 
 if __name__ == '__main__':
