@@ -15,7 +15,10 @@ print(local_ip)
 nmap_scanner = nmap.PortScanner()
 scan_range = nmap_scanner.scan(hosts="192.168.100.0-100", arguments="-p 8000 --open")
 
-print(scan_range['scan'].keys(), len(scan_range['scan']))
+if len(scan_range) > 0:
+    print(scan_range)
+
+print(scan_range['scan'].items(), len(scan_range['scan']))
 
 
 # async def violation_api(image):
