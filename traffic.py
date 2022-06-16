@@ -3,8 +3,6 @@ import os,sys
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
 
-
-from imutils.video import FPS
 from datetime import datetime
 from cv_processor.CentroidTracker import CentroidTracker
 from cv_processor.TrackableObject import TrackableObject
@@ -124,7 +122,7 @@ if __name__ == '__main__':
 
     points = [("A", "B"), ("B", "C"), ("C", "D")]
     
-    fps = FPS().start()
+    # fps = FPS().start()
 
     total_frames = 0
    
@@ -132,7 +130,7 @@ if __name__ == '__main__':
 
     points = [("A", "B"), ("B", "C"), ("C", "D")]
 
-    fps = FPS().start()
+    # fps = FPS().start()
 
     while True:
 
@@ -432,11 +430,11 @@ if __name__ == '__main__':
         increment the total number of frames processed thus far and then update the FPS counter
         """
         total_frames += 1
-        fps.update()
-    fps.stop()
+        # fps.update()
+    # fps.stop()
 
-    logger.info("elapsed time: {:.2f}".format(fps.elapsed()))
-    logger.info("approx. FPS: {:.2f}".format(fps.fps()))
+    # logger.info("elapsed time: {:.2f}".format(fps.elapsed()))
+    # logger.info("approx. FPS: {:.2f}".format(fps.fps()))
     cv2.destroyAllWindows()
     # clean up
     logger.info("[INFO] cleaning up...")
