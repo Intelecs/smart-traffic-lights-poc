@@ -29,6 +29,7 @@ try:
     
     import RPi.GPIO as GPIO
     GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
     is_raspberry = True
 except Exception as e:
     logger.error(f"Not running on Raspberry Pi {e}")
@@ -430,11 +431,7 @@ if __name__ == '__main__':
         increment the total number of frames processed thus far and then update the FPS counter
         """
         total_frames += 1
-        # fps.update()
-    # fps.stop()
 
-    # logger.info("elapsed time: {:.2f}".format(fps.elapsed()))
-    # logger.info("approx. FPS: {:.2f}".format(fps.fps()))
     cv2.destroyAllWindows()
     # clean up
     logger.info("[INFO] cleaning up...")
