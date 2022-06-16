@@ -58,7 +58,7 @@ class MQTTclient:
     
     def __publish__(self, topic: str, payload: dict, qos: int = 1) -> bool:
         try:
-            self.mqtt_client.publishAsync(topic, json.dumps(payload), qos, self.__on_publish__)
+            self.mqtt_client.publishAsync(topic, json.dumps(payload), qos,)
             return True
         except Exception as e:
             self.logger.error("Error publishing message: %s", e)
