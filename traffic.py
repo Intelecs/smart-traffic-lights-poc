@@ -431,8 +431,13 @@ if __name__ == '__main__':
         increment the total number of frames processed thus far and then update the FPS counter
         """
         total_frames += 1
+    try:
 
-    cv2.destroyAllWindows()
-    # clean up
-    logger.info("[INFO] cleaning up...")
-    stream.stop()
+        cv2.destroyAllWindows()
+        # clean up
+        logger.info("[INFO] cleaning up...")
+        stream.stop()
+    except Exception as e:
+        logger.error("[ERROR] {}".format(e))
+        cv2.destroyAllWindows()
+        stream.stop()
