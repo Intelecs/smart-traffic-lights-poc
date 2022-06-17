@@ -70,7 +70,7 @@ def get_plate_number(image):
             image = cv2.GaussianBlur(image, (1, 1), 0)
 
             text = pytesseract.image_to_string(image)
-            results = pytesseract.image_to_data(image, output_type=Output.DICT, lang='eng', config='--psm 10')
+            results = pytesseract.image_to_data(image, output_type=Output.DICT, lang='eng', config='--psm 6')
 
             plate_number = ""
             text = results['text']
