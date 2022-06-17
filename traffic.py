@@ -423,8 +423,11 @@ if __name__ == '__main__':
                 , cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1)
 
             bottom_right = (centroid[2], centroid[3])
+            print(bottom_right)
 
-            if bottom_right > (500, 600): 
+            # (500, 600)
+            if centroid[2] > 500 and centroid[3] > 600: 
+                # pass
                 logger.info("[INFO] Vehicle is out of the frame")
 
             
