@@ -421,6 +421,12 @@ if __name__ == '__main__':
             cv2.rectangle(frame, (centroid[0], centroid[1]), (centroid[0] + text_width, centroid[1] + text_height),  (0, 255, 0), -1)
             cv2.putText(frame, text, (centroid[0], centroid[1] + 10)
                 , cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1)
+
+            bottom_right = (centroid[2], centroid[3])
+
+            if bottom_right > (500, 600): 
+                logger.info("[INFO] Vehicle is out of the frame")
+
             
        
         if conf["display"]:
