@@ -359,7 +359,7 @@ if __name__ == '__main__':
             """
             area_3 = [(600, 350), (1050, 350), (850, 250), (500, 250)]
 
-            bounding_line = cv2.line(frame, (10, 650), (500, 650), (0, 0, 255), 2)
+            bounding_line = cv2.line(frame, (10, 500), (500, 500), (0, 0, 255), 2)
             for area in [area_3]:
                 pass
                 # cv2.polylines(frame, [np.array(area, np.int32)], True, (15,220,10), 2)
