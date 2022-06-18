@@ -351,7 +351,7 @@ if __name__ == '__main__':
 
             speed = 0 if to.speedKMPH is None or  math.isnan(to.speedKMPH) else int(to.speedKMPH)
     
-            text = "SPEED {} Km/h".format(speed)
+            text = "SPEED {} Km/h".format('--')
             # text = "OBJECT {}".format(current_object.objectID)
             
             """ _summary_
