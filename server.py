@@ -35,10 +35,11 @@ async def homepage(request):
         print('plate number: ', plate_number)
 
         if plate_number is not None and plate_number != '' and len(plate_number) > 2:
-            payload = {
-                "plateNumber": plate_number
-            }
-            mqtt_client.__publish__(f"traffic/{mac}/violations", payload)
+            if plate_number[0] == 'T':
+                payload = {
+                    "plateNumber": plate_number
+                }
+                mqtt_client.__publish__(f"traffic/{mac}/violations", payload)
     except Exception as e:
         print(e)
         return JSONResponse({'error': 'Invalid request'})
