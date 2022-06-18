@@ -42,13 +42,13 @@ def traffic_state(red, yellow, green) -> None:
 def traffic_light():
     # logger.info("RED Lights")
     traffic_state(1, 0, 0)
-    time.sleep(5)
+    time.sleep(20)
     # logger.info("YELLOW Lights")
     traffic_state(0, 1, 0)
     time.sleep(5)
     # logger.info("GREEN Lights")
     traffic_state(0, 0, 1)
-    time.sleep(5)
+    time.sleep(10)
     # traffic_state(1, 0, 0)
     # time.sleep(5)
 
