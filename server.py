@@ -9,6 +9,10 @@ from starlette.responses import JSONResponse
 import uvicorn
 from inference.kash.plate_ocr import get_plate_number
 from device.MQTTclient import MQTTclient
+import re,uuid
+
+mac=':'.join(re.findall('..', '%012x' % uuid.getnode())) 
+
 
 app = Starlette(debug=True)
 
@@ -29,11 +33,12 @@ async def homepage(request):
         image = data['image']
         plate_number = get_plate_number(image)
         print('plate number: ', plate_number)
-        # plate_number = "RRT 111"
-        # payload = {
-        #     "plateNumber": plate_number
-        # }
-        # mqtt_client.__publish__("traffic/A/violations", payload)
+
+        if plate_number is not None and plate_number != '' and len(plate_number) > 2:
+            payload = {
+                "plateNumber": plate_number
+            }
+            mqtt_client.__publish__(f"traffic/{mac}/violations", payload)
     except Exception as e:
         print(e)
         return JSONResponse({'error': 'Invalid request'})

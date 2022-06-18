@@ -404,15 +404,7 @@ if __name__ == '__main__':
                     )
                  
 
-            if is_raspberry:
-                """ 
-                _summary_ setting traffic lights on window
-                """
-                if GPIO.input(17) == GPIO.HIGH:
-                    # speed_limit_violation = True
-                    _, buffer = cv2.imencode(".jpg", frame)
-                    image = base64.b64encode(buffer).decode("utf-8")
-                    asyncio.run(send_violation(image))
+
 
             text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)[0]
             text_width, text_height = text_size[0], text_size[1]
@@ -425,10 +417,18 @@ if __name__ == '__main__':
             bottom_right = (centroid[2], centroid[3])
             print(bottom_right)
 
-            # (500, 600)
             if centroid[2] > 500 and centroid[3] > 600: 
                 # pass
                 logger.info("[INFO] Vehicle is out of the frame")
+                if is_raspberry:
+                    """ 
+                    _summary_ setting traffic lights on window
+                    """
+                    if GPIO.input(17) == GPIO.HIGH:
+                        # speed_limit_violation = True
+                        _, buffer = cv2.imencode(".jpg", frame)
+                        image = base64.b64encode(buffer).decode("utf-8")
+                        asyncio.run(send_violation(image))
 
             
        
