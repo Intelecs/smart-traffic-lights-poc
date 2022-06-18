@@ -3,8 +3,6 @@ import os,sys
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
 
-
-from imutils.video import FPS
 from datetime import datetime
 from cv_processor.CentroidTracker import CentroidTracker
 from cv_processor.TrackableObject import TrackableObject
@@ -31,6 +29,7 @@ try:
     
     import RPi.GPIO as GPIO
     GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
     is_raspberry = True
 except Exception as e:
     logger.error(f"Not running on Raspberry Pi {e}")
@@ -124,7 +123,7 @@ if __name__ == '__main__':
 
     points = [("A", "B"), ("B", "C"), ("C", "D")]
     
-    fps = FPS().start()
+    # fps = FPS().start()
 
     total_frames = 0
    
@@ -132,7 +131,7 @@ if __name__ == '__main__':
 
     points = [("A", "B"), ("B", "C"), ("C", "D")]
 
-    fps = FPS().start()
+    # fps = FPS().start()
 
     while True:
 
@@ -189,7 +188,7 @@ if __name__ == '__main__':
                     idx = int(detections[0, 0, i, 1])
                     
 
-                    if CLASSES[idx] not in [ "bicycle", "bus", "car", "motorbike", "train", "person"]:
+                    if CLASSES[idx] not in [ "bicycle", "bus", "car", "motorbike", "train"]:
                         continue
                     object_name = CLASSES[idx]
 
@@ -359,8 +358,11 @@ if __name__ == '__main__':
             Look if the object has violated the speed limit
             """
             area_3 = [(600, 350), (1050, 350), (850, 250), (500, 250)]
+
+            bounding_line = cv2.line(frame, (10, 600), (500, 600), (0, 0, 255), 2)
             for area in [area_3]:
-                cv2.polylines(frame, [np.array(area, np.int32)], True, (15,220,10), 2)
+                pass
+                # cv2.polylines(frame, [np.array(area, np.int32)], True, (15,220,10), 2)
 
             if is_raspberry:
 
@@ -402,15 +404,7 @@ if __name__ == '__main__':
                     )
                  
 
-            if is_raspberry:
-                """ 
-                _summary_ setting traffic lights on window
-                """
-                if GPIO.input(17) == GPIO.HIGH:
-                    # speed_limit_violation = True
-                    _, buffer = cv2.imencode(".jpg", frame)
-                    image = base64.b64encode(buffer).decode("utf-8")
-                    asyncio.run(send_violation(image))
+
 
             text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)[0]
             text_width, text_height = text_size[0], text_size[1]
@@ -419,6 +413,23 @@ if __name__ == '__main__':
             cv2.rectangle(frame, (centroid[0], centroid[1]), (centroid[0] + text_width, centroid[1] + text_height),  (0, 255, 0), -1)
             cv2.putText(frame, text, (centroid[0], centroid[1] + 10)
                 , cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1)
+
+            y_max, x_max, channels = frame.shape
+        
+            if centroid[2] > 500 and centroid[3] > 600: 
+                # pass
+                logger.info("[INFO] Vehicle is out of the frame")
+                if is_raspberry:
+                    """ 
+                    _summary_ setting traffic lights on window
+                    """
+                    if GPIO.input(17) == GPIO.HIGH:
+                        # speed_limit_violation = True
+                        cv2.putText(frame, f"TRAFFIC LIMIT VIOLATION BY object {current_object}", (x_max - 150, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1)
+                        _, buffer = cv2.imencode(".jpg", frame)
+                        image = base64.b64encode(buffer).decode("utf-8")
+                        asyncio.run(send_violation(image))
+
             
        
         if conf["display"]:
@@ -432,12 +443,13 @@ if __name__ == '__main__':
         increment the total number of frames processed thus far and then update the FPS counter
         """
         total_frames += 1
-        fps.update()
-    fps.stop()
+    try:
 
-    logger.info("elapsed time: {:.2f}".format(fps.elapsed()))
-    logger.info("approx. FPS: {:.2f}".format(fps.fps()))
-    cv2.destroyAllWindows()
-    # clean up
-    logger.info("[INFO] cleaning up...")
-    stream.stop()
+        cv2.destroyAllWindows()
+        # clean up
+        logger.info("[INFO] cleaning up...")
+        stream.stop()
+    except Exception as e:
+        logger.error("[ERROR] {}".format(e))
+        cv2.destroyAllWindows()
+        stream.stop()
