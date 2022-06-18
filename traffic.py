@@ -188,7 +188,7 @@ if __name__ == '__main__':
                     idx = int(detections[0, 0, i, 1])
                     
 
-                    if CLASSES[idx] not in [ "bicycle", "bus", "car", "motorbike", "train", "person"]:
+                    if CLASSES[idx] not in [ "bicycle", "bus", "car", "motorbike", "train"]:
                         continue
                     object_name = CLASSES[idx]
 
@@ -414,9 +414,8 @@ if __name__ == '__main__':
             cv2.putText(frame, text, (centroid[0], centroid[1] + 10)
                 , cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1)
 
-            bottom_right = (centroid[2], centroid[3])
-            print(bottom_right)
-
+            y_max, x_max, channels = frame.shape
+        
             if centroid[2] > 500 and centroid[3] > 600: 
                 # pass
                 logger.info("[INFO] Vehicle is out of the frame")
@@ -426,6 +425,7 @@ if __name__ == '__main__':
                     """
                     if GPIO.input(17) == GPIO.HIGH:
                         # speed_limit_violation = True
+                        cv2.putText(frame, f"TRAFFIC LIMIT VIOLATION BY object {current_object}", (x_max - 150, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1)
                         _, buffer = cv2.imencode(".jpg", frame)
                         image = base64.b64encode(buffer).decode("utf-8")
                         asyncio.run(send_violation(image))
