@@ -18,21 +18,18 @@ except Exception as e:
     logger.error(f"Not running on Raspberry Pi {e}")
     is_raspberry = False
 
-while True:
-    try:
-        logger.info("Starting Traffic Lights threading...")
-        while True:
-            if GPIO.input(20) == GPIO.HIGH:
-                counter = 0
-                while counter < 61:
-                    if counter == 60:
-                        traffic_state(1, 0, 0) # stop the vehicles
-                        traffic_light_pedestrian()
-                    time.sleep(1)
-                    counter += 1
-
-            run_normal_state()
-    except Exception as e:
-        logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
-        continue
-    break
+try:
+    logger.info("Starting Traffic Lights threading...")
+    while True:
+        if GPIO.input(20) == GPIO.HIGH:
+            counter = 0
+            while counter < 61:
+                if counter == 60:
+                    traffic_state(1, 0, 0) # stop the vehicles
+                    traffic_light_pedestrian()
+                time.sleep(1)
+                counter += 1
+        run_normal_state()
+except Exception as e:
+    logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
+    
