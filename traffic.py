@@ -83,7 +83,7 @@ def traffic_lights():
     while True:
         try:
             logger.info("Starting Trafiic Lights threading...")
-            traffic_light()
+            # traffic_light()
         except Exception as e:
             logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
             continue

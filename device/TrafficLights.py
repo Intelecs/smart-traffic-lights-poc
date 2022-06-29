@@ -39,20 +39,18 @@ def traffic_state(red, yellow, green) -> None:
         GPIO.output(GREEN_PIN, green)
 
 
-def traffic_light():
+def traffic_light(delay: int = 10):
     logger.info("Should open Send RED Signal to Junction A")
     traffic_state(1, 0, 0)
-    time.sleep(5)
+    time.sleep(delay)
     logger.info("Should open Send YELLOW Signal to Junction A")
     traffic_state(0, 1, 0)
-    time.sleep(5)
+    time.sleep(delay)
     logger.info("Should open Send GREEN Signal to Junction A")
     traffic_state(0, 0, 1)
-    time.sleep(5)
-    # traffic_state(1, 0, 0)
-    # time.sleep(5)
+    time.sleep(delay)
 
 
-def run():
-    while True:
-        traffic_light()
+# def run():
+#     while True:
+#         traffic_light()
