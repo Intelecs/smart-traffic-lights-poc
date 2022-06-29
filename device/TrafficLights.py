@@ -28,8 +28,8 @@ GREEN_PIN = 27
 YELLOW_PIN = 22
 
 # control pins for traffic lights for pedestrians
-PED_YELLOW_PIN = 14
-PED_RED_PIN = 23
+PED_YELLOW_PIN = 23
+PED_RED_PIN = 24
 PED_GREEN_PIN = 25
 
 
