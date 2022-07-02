@@ -147,16 +147,16 @@ if __name__ == '__main__':
         frame = imutils.resize(frame, width=conf["frame_width"])
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-        if is_raspberry:
+        if False:
 
                 # Red
                 # cv2.circle(
                 #     frame, (30, 30), 20, (0,0,255), -1
                 # )
                 if GPIO.input(17) == GPIO.HIGH:
-                    # cv2.circle(frame, (30, 30), 20, (0,0,255), -1)
+                    cv2.circle(frame, (30, 30), 20, (0,0,255), -1)
 
-                    cv2.circle(frame, (30, 130), 20, (0,128,0), -1)
+                    # cv2.circle(frame, (30, 130), 20, (0,128,0), -1)
                 else:
 
                     cv2.circle(
@@ -169,9 +169,9 @@ if __name__ == '__main__':
                 YELLOW_PIN = 22
                 if GPIO.input(22) == GPIO.HIGH:
                     # Yellow 
-                    # cv2.circle(frame, (30, 80), 20, (51, 255, 249), -1)
+                    cv2.circle(frame, (30, 80), 20, (51, 255, 249), -1)
 
-                    cv2.circle(frame, (30, 30), 20, (0,0,255), -1)
+                    # cv2.circle(frame, (30, 30), 20, (0,0,255), -1)
                 else:
                     cv2.circle(
                     frame, (30, 80), 20, (128,128,128), -1
