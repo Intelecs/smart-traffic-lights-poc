@@ -3,7 +3,6 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
 import time
 
-
 from utils.utils import get_logger
 from device.TrafficLights import run_normal_state, traffic_light_pedestrian, traffic_state
 
@@ -22,6 +21,7 @@ try:
     logger.info("Starting Traffic Lights threading...")
     while True:
         if GPIO.input(20) == GPIO.HIGH:
+            logger.info("Sending SIGNALS To other juction")
             counter = 0
             while counter < 61:
                 if counter == 60:
