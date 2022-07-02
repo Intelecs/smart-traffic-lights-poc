@@ -108,7 +108,9 @@ class MQTTclient:
         self.mqtt_client.configureDrainingFrequency(2)
         self.mqtt_client.configureConnectDisconnectTimeout(10)
         self.mqtt_client.onMessage = self.__on_message__
-        self.mqtt_client.connect(keepAliveIntervalSecond=600,)
+        self.mqtt_client.connect(
+            keepAliveIntervalSecond=600,
+        )
         self.mqtt_client.onOffline = self.__on_offline__
         self.mqtt_client.onOnline = self.__on_online__
         self.mqtt_client.connect()

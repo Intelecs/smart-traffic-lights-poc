@@ -18,9 +18,8 @@ scan_range = nmap_scanner.scan(hosts="192.168.100.0-100", arguments="-p 8000 --o
 
 ip_address = None
 if len(scan_range) > 0:
-    ip_address = list(scan_range['scan'].keys())[0]
+    ip_address = list(scan_range["scan"].keys())[0]
     print(ip_address)
-    
 
 
 async def violation_api(image):
@@ -29,10 +28,8 @@ async def violation_api(image):
         return
     logger.info("Connecting to %s", ip_address)
     url = f"http://{ip_address}:8000/traffic"
-    headers = {'Content-Type': 'application/json'}
-    data = {
-        "right": image
-    }
+    headers = {"Content-Type": "application/json"}
+    data = {"right": image}
     try:
         requests.post(url, json=data, headers=headers)
         logger.info(f"Violation sent to {url}")
@@ -40,10 +37,12 @@ async def violation_api(image):
         logger.error(f"Error sending violation to {url}")
         logger.error(e)
 
+
 async def send_signal(image):
     asyncio.ensure_future(violation_api(image))
     await asyncio.sleep(0)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     while True:
         asyncio.run(send_signal("RED"))

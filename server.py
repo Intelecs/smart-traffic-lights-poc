@@ -1,4 +1,4 @@
-import os,sys
+import os, sys
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
@@ -10,6 +10,7 @@ import uvicorn
 from inference.kash.plate_ocr import get_plate_number
 from device.MQTTclient import MQTTclient
 from utils.utils import get_logger
+import asyncio
 
 app = Starlette(debug=True)
 
@@ -24,37 +25,44 @@ mqtt_client = MQTTclient(
 
 mqtt_client.__setup__()
 
-@app.route('/violations', methods=['POST']) 
+
+@app.route("/violations", methods=["POST"])
 async def homepage(request):
-    
+
     try:
         data = await request.json()
-        image = data['image']
+        image = data["image"]
         plate_number = get_plate_number(image)
-        print('plate number: ', plate_number)
+        print("plate number: ", plate_number)
         plate_number = "RRT 111"
-        payload = {
-            "plateNumber": plate_number
-        }
+        payload = {"plateNumber": plate_number}
         mqtt_client.__publish__("traffic/A/violations", payload)
     except Exception as e:
         logger.error(f"Error processing a payload {e}")
-        return JSONResponse({'error': 'Invalid request'})
-    return JSONResponse({'message': 'Hello World!'})
+        return JSONResponse({"error": "Invalid request"})
+    return JSONResponse({"message": "Hello World!"})
 
-@app.route('/traffic', methods=['POST'])
+
+@app.route("/traffic", methods=["POST"])
 async def traffic(request):
     try:
         data = await request.json()
 
-        logger.info(f'Received data {data}')
-        return JSONResponse({'message': ''})
-        
+        logger.info(f"Received data {data}")
+        return JSONResponse({"message": ""})
+
     except Exception as e:
         logger.error(f"Error processing a payload {e}")
-        return JSONResponse({'error': 'Invalid request'})
-    return JSONResponse({'message': 'Hello World!'})
+        return JSONResponse({"error": "Invalid request"})
 
 
-if __name__ == '__main__':
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+@app.websocket_route("/ws")
+async def websocket_endpoint(websocket):
+    await websocket.accept()
+    while True:
+        await websocket.send_text("Hello World!")
+        await asyncio.sleep(1)
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

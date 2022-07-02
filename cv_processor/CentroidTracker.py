@@ -2,6 +2,7 @@ from scipy.spatial import distance as dist
 from collections import OrderedDict
 import numpy as np
 
+
 class CentroidTracker:
     def __init__(self, maxDisappeared=50, maxDistance=50):
         # initialize the next unique object ID along with two ordered
@@ -60,7 +61,7 @@ class CentroidTracker:
             return self.bbox
 
         # initialize an array of input centroids for the current frame
-        
+
         inputCentroids = np.zeros((len(rects), 2), dtype="int")
         inputRects = []
         # loop over the bounding box rectangles
@@ -73,7 +74,7 @@ class CentroidTracker:
 
         # if we are currently not tracking any objects take the input
         # centroids and register each of them
-        
+
         if len(self.objects) == 0:
             for i in range(0, len(inputCentroids)):
                 self.register(inputCentroids[i], inputRects[i])  # CHANGE
@@ -81,10 +82,10 @@ class CentroidTracker:
         # otherwise, are are currently tracking objects so we need to
         # try to match the input centroids to existing object
         # centroids
-        
+
         else:
             # grab the set of object IDs and corresponding centroids
-            
+
             objectIDs = list(self.objects.keys())
             objectCentroids = list(self.objects.values())
 

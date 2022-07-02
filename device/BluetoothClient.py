@@ -40,7 +40,9 @@ class BluetoothClient:
         self.logger.info("Starting bluetooth...")
 
     def connect(self) -> None:
-        self.logger.info("Connecting to....",)
+        self.logger.info(
+            "Connecting to....",
+        )
         while True:
             try:
                 self.server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)

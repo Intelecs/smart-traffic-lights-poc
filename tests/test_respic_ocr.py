@@ -1,6 +1,7 @@
 import unittest
 from inference.respic.respic_detect_ocr import plate_ocr
 
+
 class TestRespicOCR(unittest.TestCase):
 
     model_path = "models/respik.pt"

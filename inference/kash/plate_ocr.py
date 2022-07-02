@@ -16,14 +16,15 @@ WHRatio = inWidth / float(inHeight)
 inScaleFactor = 0.007843
 meanVal = 127.5
 
-classNames = ('background',
-              'plate')
-net = dnn.readNetFromCaffe("models/plate_number.prototxt","models/plate_number.caffemodel")
+classNames = ("background", "plate")
+net = dnn.readNetFromCaffe(
+    "models/plate_number.prototxt", "models/plate_number.caffemodel"
+)
 net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
+
 
 def get_plate_number(image):
 
-    
     image = base64.b64decode(image)
     image = Image.open(io.BytesIO(image))
     frame = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
@@ -32,14 +33,11 @@ def get_plate_number(image):
     Deteact a plate number from an image
     """
     blob = cv2.dnn.blobFromImage(frame, size=(300, 300), ddepth=cv2.CV_8U)
-    net.setInput(blob, scalefactor=1.0/127.5, mean=[127.5,
-            127.5, 127.5])
+    net.setInput(blob, scalefactor=1.0 / 127.5, mean=[127.5, 127.5, 127.5])
     detections = net.forward()
 
-  
     cols = frame.shape[1]
     rows = frame.shape[0]
-
 
     for i in np.arange(0, detections.shape[2]):
         confidence = detections[0, 0, i, 2]
@@ -50,7 +48,7 @@ def get_plate_number(image):
             xLeftBottom = int(detections[0, 0, i, 3] * cols) - 20
             yLeftBottom = int(detections[0, 0, i, 4] * rows) - 20
             xRightTop = int(detections[0, 0, i, 5] * cols) - 4
-            yRightTop = int(detections[0, 0, i, 6] * rows)+ 20
+            yRightTop = int(detections[0, 0, i, 6] * rows) + 20
             # cv2.rectangle(frame, (xLeftBottom, yLeftBottom), (xRightTop, yRightTop),
             #                   (0, 255, 255))
 
@@ -61,7 +59,7 @@ def get_plate_number(image):
 
             gray = cv2.cvtColor(croped, cv2.COLOR_BGR2GRAY)
             # gray = cv2.resize(gray, (600, 600))
-      
+
             # image = gray
             image = np.array(gray)
             norm_img = np.zeros((image.shape[0], image.shape[1]))
@@ -70,19 +68,26 @@ def get_plate_number(image):
             image = cv2.GaussianBlur(image, (1, 1), 0)
 
             text = pytesseract.image_to_string(image)
-            results = pytesseract.image_to_data(image, output_type=Output.DICT, lang='eng', config='--psm 6')
+            results = pytesseract.image_to_data(
+                image, output_type=Output.DICT, lang="eng", config="--psm 6"
+            )
 
             plate_number = ""
-            text = results['text']
+            text = results["text"]
             for i in range(len(text)):
-                if text[i] != '':                
-                    plate_number += text[i].replace('\n', '').replace(' ', '').replace('-', '').replace('“', '')
-            
-            table = str.maketrans('', '', string.ascii_lowercase)
+                if text[i] != "":
+                    plate_number += (
+                        text[i]
+                        .replace("\n", "")
+                        .replace(" ", "")
+                        .replace("-", "")
+                        .replace("“", "")
+                    )
+
+            table = str.maketrans("", "", string.ascii_lowercase)
 
             plate_number = plate_number.translate(table)
             plate_number = f"{plate_number})(*]\@^&_+-=!~`|/\\"
             for char in string.punctuation:
-                plate_number = plate_number.replace(char, '')
+                plate_number = plate_number.replace(char, "")
             return plate_number
-

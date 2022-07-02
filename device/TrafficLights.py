@@ -32,7 +32,7 @@ PED_YELLOW_PIN = 23
 PED_RED_PIN = 24
 PED_GREEN_PIN = 25
 
-BUTTON  = 20
+BUTTON = 20
 
 if is_raspberry:
     GPIO.setup(RED_PIN, GPIO.OUT)
@@ -45,18 +45,19 @@ if is_raspberry:
     GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
-
 def traffic_state(red, yellow, green) -> None:
     if is_raspberry:
         GPIO.output(RED_PIN, red)
         GPIO.output(YELLOW_PIN, yellow)
         GPIO.output(GREEN_PIN, green)
 
+
 def ped_traffic_state(red, yellow, green) -> None:
     if is_raspberry:
         GPIO.output(PED_RED_PIN, red)
         GPIO.output(PED_GREEN_PIN, yellow)
         GPIO.output(PED_YELLOW_PIN, green)
+
 
 def traffic_light_vehicles(delay: int = 10):
     logger.info("Should open Send RED Signal to Junction A")
@@ -68,6 +69,7 @@ def traffic_light_vehicles(delay: int = 10):
     logger.info("Should open Send GREEN Signal to Junction A")
     traffic_state(0, 0, 1)
     time.sleep(delay)
+
 
 def traffic_light_pedestrian(delay: int = 10):
     logger.info("Should open Send RED Signal to Junction A")

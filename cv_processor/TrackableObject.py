@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 import numpy as np
 
-class TrackableObject:
 
+class TrackableObject:
     def __init__(self, objectID, centroid, object_name: str = None):
         self.objectID = objectID
         self.centroids = [centroid]
@@ -19,6 +19,7 @@ class TrackableObject:
         self.logged = False
 
         self.direction = None
+
     def calculate_speed(self, estimatedSpeeds):
 
         self.speedKMPH = np.average(estimatedSpeeds)
