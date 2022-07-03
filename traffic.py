@@ -166,7 +166,7 @@ if __name__ == '__main__':
                 GREEN_PIN = 27
                 
                 YELLOW_PIN = 22
-                if GPIO.input(22) == GPIO.HIGH:
+                if GPIO.input(27) == GPIO.HIGH:
                     # Yellow 
                     cv2.circle(frame, (30, 80), 20, (51, 255, 249), -1)
 
@@ -176,7 +176,7 @@ if __name__ == '__main__':
                     frame, (30, 80), 20, (128,128,128), -1
                     )
                 
-                if GPIO.input(27) == GPIO.HIGH:
+                if GPIO.input(22) == GPIO.HIGH:
                     # Green
                     cv2.circle(frame, (30, 130), 20, (0,128,0), -1)
                     # cv2.circle(frame, (30, 80), 20, (51, 255, 249), -1)
