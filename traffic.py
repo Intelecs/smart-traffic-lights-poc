@@ -147,7 +147,7 @@ if __name__ == '__main__':
         frame = imutils.resize(frame, width=conf["frame_width"])
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-        if False:
+        if is_raspberry:
 
                 # Red
                 # cv2.circle(
