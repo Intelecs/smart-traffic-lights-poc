@@ -98,8 +98,7 @@ if __name__ == '__main__':
     net = cv2.dnn.readNetFromCaffe(conf["prototxt_path"],
         conf["model_path"])
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
-
-    time.sleep(2)
+    
     if is_raspberry:
         # stream = PiGear( logging=True).start()
         pass
