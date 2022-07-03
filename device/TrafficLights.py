@@ -49,8 +49,6 @@ def traffic_light():
     # logger.info("GREEN Lights")
     traffic_state(0, 0, 1)
     time.sleep(10)
-    traffic_state(0, 1, 0)
-    time.sleep(10)
 
 def run():
     while True:
