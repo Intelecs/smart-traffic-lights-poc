@@ -23,7 +23,9 @@ if len(scan_range) > 0:
 
 
 def on_message(ws, message):
-    print(message)
+    received_message = str(message)
+    print(received_message)
+    ws.send("Hello World! 1")
 
 
 def on_error(ws, error):
@@ -48,6 +50,9 @@ if __name__ == "__main__":
         on_open=on_open,
         on_error=on_error,
     )
+
+    
+
     ws.run_forever(dispatcher=rel)
-    ws.signal(2, rel.abort)
+    rel.signal(2, rel.abort)
     rel.dispatch()

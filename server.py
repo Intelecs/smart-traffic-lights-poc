@@ -60,7 +60,9 @@ async def traffic(request):
 async def websocket_endpoint(websocket):
     await websocket.accept()
     while True:
-        await websocket.send_text("Hello World!")
+        await websocket.send_text("ping")
+        received = await websocket.receive_text()
+        print(received)
         await asyncio.sleep(1)
 
 
