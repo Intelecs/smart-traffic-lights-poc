@@ -24,8 +24,8 @@ except Exception as e:
 
 
 RED_PIN = 17 
-GREEN_PIN = 27
-YELLOW_PIN = 22
+GREEN_PIN = 22
+YELLOW_PIN = 27
 
 if is_raspberry:
     GPIO.setup(RED_PIN, GPIO.OUT)
@@ -46,12 +46,12 @@ def traffic_light():
     logger.info("YELLOW Lights")
     traffic_state(0, 1, 0)
     time.sleep(10)
-    # # logger.info("GREEN Lights")
-    # traffic_state(0, 0, 1)
-    # time.sleep(20)
+    logger.info("GREEN Lights")
+    traffic_state(0, 0, 1)
+    time.sleep(10)
 
-    # traffic_state(0, 1, 0)
-    # time.sleep(10)
+    traffic_state(0, 1, 0)
+    time.sleep(10)
 
 def run():
     while True:
