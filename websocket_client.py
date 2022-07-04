@@ -14,7 +14,7 @@ sock.close()
 
 print(local_ip)
 nmap_scanner = nmap.PortScanner()
-scan_range = nmap_scanner.scan(hosts="192.168.100.0-100", arguments="-p 8000 --open")
+scan_range = nmap_scanner.scan(hosts="192.168.43.0-100", arguments="-p 8000 --open")
 
 ip_address = None
 if len(scan_range) > 0:
