@@ -29,7 +29,7 @@ except Exception as e:
 try:
     logger.info("Starting Traffic Lights threading...")
     while True:
-        if GPIO.input(BUTTON) == GPIO.HIGH:
+        if GPIO.input(BUTTON) == GPIO.LOW:
             print('Button pressed')
             logger.info("Sending SIGNALS To other juction")
             counter = 0
