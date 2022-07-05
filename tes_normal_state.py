@@ -1,5 +1,7 @@
 import os, sys
 
+from cv2 import log
+
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
 import time
@@ -27,7 +29,8 @@ try:
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
-    GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    # GPIO.setup(Button,GPIO.IN,pull_up_down=GPIO.PUD_UP)
     is_raspberry = True
 except Exception as e:
     logger.error(f"Not running on Raspberry Pi {e}")
@@ -36,6 +39,8 @@ except Exception as e:
 try:
     logger.info("Starting Traffic Lights threading...")
     while True:
+        button_state = GPIO.input(BUTTON)
+        logger.info("Button state: %s", button_state)
         if GPIO.input(BUTTON) == GPIO.HIGH:
             print('Button pressed')
             logger.info("Sending SIGNALS To other juction")
@@ -43,13 +48,13 @@ try:
             while counter < 61:
                 logger.info(f"count {counter}")
                 if counter == 60:
-                    pass
+                    logger.info("Do something...")
                     # traffic_state(1, 0, 0)  # stop the vehicles
 
                     # traffic_light_pedestrian()
                 time.sleep(1)
                 counter += 1
-        traffic_normal()
+        # traffic_normal()
         # ped_traffic_state(1, 1, 1)
         # traffic_light_pedestrian()
         # ped_traffic_state(0, 0, 0)
