@@ -1,3 +1,4 @@
+from operator import is_
 import re
 import time
 
@@ -73,6 +74,7 @@ def on_close(ws, close_status_code, close_msg):
 def on_open(ws):
     print("Opened connection")
 
+
 # server = websocket.enableTrace(True)
 
 from websocket import create_connection
@@ -85,19 +87,29 @@ ws = websocket.WebSocketApp(
     on_error=on_error,
 )
 
+
 def run_ws_client():
     ws.run_forever(dispatcher=rel)
     rel.signal(2, rel.abort)
     rel.dispatch()
 
+
 # threading.Thread(target=run_ws_client, daemon=True).start()
 
-ws = create_connection(
-    "ws://" + ip_address + ":8000/ws")
+ws = None
+ws = create_connection("ws://" + ip_address + ":8000/ws")
 
 # ws.run_forever(dispatcher=rel)
 # rel.signal(2, rel.abort)
 # rel.dispatch()
+
+
+def is_connected():
+    try:
+        ws.recv()
+        return ws.connected
+    except Exception as e:
+        return False
 
 
 BUTTON = 20
@@ -157,33 +169,54 @@ def traffic_normal(delay=10):
     traffic_state(1, 0, 0)
     ped_traffic_state(0, 0, 1)
     payload = {"traffic_light_vehicles": "RED", "traffic_light_pedestrian": "GREEN"}
-    ws.send(str(payload))
+
+    if is_connected:
+        ws.send(str(payload))
+    else:
+        ws = create_connection("ws://" + ip_address + ":8000/ws")
 
     time.sleep(delay)
 
     traffic_state(0, 1, 0)
     ped_traffic_state(0, 1, 0)
     payload = {"traffic_light_vehicles": "YELLOW", "traffic_light_pedestrian": "YELLOW"}
-    ws.send(str(payload))
+
+    if is_connected:
+        ws.send(str(payload))
+    else:
+        ws = create_connection("ws://" + ip_address + ":8000/ws")
+
     time.sleep(delay)
 
     traffic_state(0, 0, 1)
     ped_traffic_state(1, 0, 0)
     payload = {"traffic_light_vehicles": "GREEN", "traffic_light_pedestrian": "RED"}
-    ws.send(str(payload))
+
+    if is_connected:
+        ws.send(str(payload))
+    else:
+        ws = create_connection("ws://" + ip_address + ":8000/ws")
+
     time.sleep(delay)
 
     traffic_state(0, 1, 0)
     ped_traffic_state(0, 1, 0)
     payload = {"traffic_light_vehicles": "YELLOW", "traffic_light_pedestrian": "YELLOW"}
-    ws.send(str(payload))
+
+    if is_connected:
+        ws.send(str(payload))
+    else:
+        ws = create_connection("ws://" + ip_address + ":8000/ws")
+
     time.sleep(delay)
 
 
 def run():
     try:
         logger.info("Starting Traffic Lights threading...")
-        message = ws.recv()
+        if is_connected:
+            message = ws.recv()
+
         print(message)
         while True:
             button_state = GPIO.input(BUTTON)
@@ -211,8 +244,12 @@ def run():
             # traffic_light_pedestrian()
             # ped_traffic_state(0, 0, 0)
     except KeyboardInterrupt as e:
-        logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
+        logger.error(
+            "Something went wrong with traffic lights {}".format(e), exc_info=True
+        )
     except Exception as e:
-        logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
+        logger.error(
+            "Something went wrong with traffic lights {}".format(e), exc_info=True
+        )
     finally:
         GPIO.cleanup()

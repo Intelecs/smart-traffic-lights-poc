@@ -1,17 +1,13 @@
 import os, sys
 
-from cv2 import log
-
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
 import time
 
 from utils.utils import get_logger
-from device.TrafficLights import (
-    run
-)
+from device.TrafficLights import run
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run()
 
 # is_raspberry = True
