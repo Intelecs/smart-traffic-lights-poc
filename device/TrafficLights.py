@@ -25,8 +25,8 @@ except Exception as e:
 
 # Control pins for traffic lights for vehicles
 RED_PIN = 17
-GREEN_PIN = 27
-YELLOW_PIN = 22
+GREEN_PIN = 22
+YELLOW_PIN = 27
 
 # control pins for traffic lights for pedestrians
 PED_YELLOW_PIN = 23
