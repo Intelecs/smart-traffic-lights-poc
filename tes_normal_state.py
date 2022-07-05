@@ -36,5 +36,6 @@ try:
                 time.sleep(1)
                 counter += 1
         run_normal_state()
-except Exception as e:
+except KeyboardInterrupt as e:
     logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
+    GPIO.cleanup()
