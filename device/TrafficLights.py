@@ -74,13 +74,13 @@ def traffic_light_vehicles(delay: int = 10):
 
 def traffic_light_pedestrian(delay: int = 10):
     logger.info("Should open Send RED Signal to Junction A")
-    ped_traffic_state(0, 0, 1)
+    ped_traffic_state(1, 0, 0)
     time.sleep(delay)
     logger.info("Should open Send YELLOW Signal to Junction A")
     ped_traffic_state(0, 1, 0)
     time.sleep(delay)
     logger.info("Should open Send GREEN Signal to Junction A")
-    ped_traffic_state(1, 0, 0)
+    ped_traffic_state(0, 0, 1)
     time.sleep(delay)
 
 def traffic_normal(delay = 10):
