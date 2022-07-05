@@ -92,7 +92,7 @@ def traffic_lights():
 if __name__ == '__main__':
 
     # Starting Raspberry Pi GPIO
-    Thread(target=traffic_lights).start()
+    # Thread(target=traffic_lights).start()
 
 
     net = cv2.dnn.readNetFromCaffe(conf["prototxt_path"],
