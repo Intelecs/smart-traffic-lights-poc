@@ -2,7 +2,7 @@ import time
 
 import os, sys
 from uuid import getnode
-
+import threading
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
@@ -84,5 +84,8 @@ def traffic_light_pedestrian(delay: int = 10):
 
 
 def run_normal_state(delay=10):
-    traffic_light_vehicles(delay)
-    traffic_light_pedestrian(delay)
+
+    threading.Thread(target=traffic_light_vehicles, args=(delay,)).start()
+    threading.Thread(target=traffic_light_pedestrian, args=(delay,)).start()
+    # traffic_light_vehicles(delay)
+    # traffic_light_pedestrian(delay)
