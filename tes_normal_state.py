@@ -8,11 +8,6 @@ import time
 
 from utils.utils import get_logger
 from device.TrafficLights import (
-    run_normal_state,
-    traffic_light_pedestrian,
-    traffic_state,
-    traffic_normal,
-    ped_traffic_state,
     run
 )
 
