@@ -21,6 +21,8 @@ import socket
 import dlib
 import time
 from threading import Thread
+import re,uuid
+mac=':'.join(re.findall('..', '%012x' % uuid.getnode()))
 
 
 is_raspberry = True
@@ -80,9 +82,9 @@ CLASSES = [
 
 
 async def violation_api(image):
-    url = f"http://{local_ip}:8000/violations"
+    url = f"http://{local_ip}:8000/remote"
     headers = {"Content-Type": "application/json"}
-    data = {"image": image}
+    data = {"image": image, "remote_mac": mac}
     try:
         requests.post(url, json=data, headers=headers)
         logger.info(f"Violation sent to {url}")
@@ -465,7 +467,7 @@ if __name__ == "__main__":
                     """
                     _summary_ setting traffic lights on window
                     """
-                    if GPIO.input(17) == GPIO.HIGH:
+                    if GPIO.input(25) == GPIO.HIGH:
                         # speed_limit_violation = True
                         cv2.putText(
                             frame,

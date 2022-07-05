@@ -124,6 +124,7 @@ if is_raspberry:
     GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 
+
 def traffic_state(red, yellow, green) -> None:
     if is_raspberry:
         GPIO.output(RED_PIN, red)

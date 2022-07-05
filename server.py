@@ -11,6 +11,8 @@ from inference.kash.plate_ocr import get_plate_number
 from device.MQTTclient import MQTTclient
 from utils.utils import get_logger
 import asyncio
+import re,uuid
+mac=':'.join(re.findall('..', '%012x' % uuid.getnode()))
 
 app = Starlette(debug=True)
 
@@ -26,21 +28,46 @@ mqtt_client = MQTTclient(
 mqtt_client.__setup__()
 
 
-@app.route("/violations", methods=["POST"])
+@app.route('/violations', methods=['POST']) 
 async def homepage(request):
-
+    
     try:
         data = await request.json()
-        image = data["image"]
+        image = data['image']
         plate_number = get_plate_number(image)
-        print("plate number: ", plate_number)
-        plate_number = "RRT 111"
-        payload = {"plateNumber": plate_number}
-        mqtt_client.__publish__("traffic/A/violations", payload)
+        print('plate number: ', plate_number)
+
+        if plate_number is not None and plate_number != '' and len(plate_number) > 2:
+            if plate_number[0] == 'T':
+                payload = {
+                    "plateNumber": plate_number
+                }
+                mqtt_client.__publish__(f"traffic/{mac}/violations", payload)
     except Exception as e:
-        logger.error(f"Error processing a payload {e}")
-        return JSONResponse({"error": "Invalid request"})
-    return JSONResponse({"message": "Hello World!"})
+        print(e)
+        return JSONResponse({'error': 'Invalid request'})
+    return JSONResponse({'message': 'Hello World!'})
+
+@app.route('/remote', methods=['POST']) 
+async def remote(request):
+    
+    try:
+        data = await request.json()
+        image = data['image']
+        remote_mac = data['remote_mac']
+        plate_number = get_plate_number(image)
+        print('plate number: ', plate_number)
+
+        if plate_number is not None and plate_number != '' and len(plate_number) > 2:
+            if plate_number[0] == 'T':
+                payload = {
+                    "plateNumber": plate_number
+                }
+                mqtt_client.__publish__(f"traffic/{remote_mac}/violations", payload)
+    except Exception as e:
+        print(e)
+        return JSONResponse({'error': 'Invalid request'})
+    return JSONResponse({'message': 'Hello World!'})
 
 
 @app.route("/traffic", methods=["POST"])
