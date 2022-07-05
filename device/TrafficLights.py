@@ -54,7 +54,6 @@ scan_range = nmap_scanner.scan(hosts=ip_address, arguments="-p 8000 --open")
 ip_address = None
 if len(scan_range) > 0:
     ip_address = list(scan_range["scan"].keys())[0]
-    print(ip_address)
 
 
 def on_message(ws, message):
@@ -75,13 +74,18 @@ def on_open(ws):
 
 server = websocket.enableTrace(True)
 
-ws = websocket.WebSocketApp(
-    "ws://" + ip_address + ":8000/ws",
-    on_message=on_message,
-    # on_close=on_close,
-    # on_open=on_open,
-    # on_error=on_error,
-)
+from websocket import create_connection
+
+# ws = websocket.WebSocketApp(
+#     "ws://" + ip_address + ":8000/ws",
+#     on_message=on_message,
+#     # on_close=on_close,
+#     # on_open=on_open,
+#     # on_error=on_error,
+# )
+
+ws = create_connection(
+    "ws://" + ip_address + ":8000/ws")
 
 # ws.run_forever(dispatcher=rel)
 # rel.signal(2, rel.abort)
@@ -203,5 +207,4 @@ def run():
     except Exception as e:
         logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
     finally:
-
         GPIO.cleanup()

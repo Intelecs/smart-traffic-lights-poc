@@ -11,7 +11,7 @@ from device.TrafficLights import (
     run
 )
 
-if __name__ == '__main':
+if __name__ == '__main__':
     run()
 
 # is_raspberry = True
