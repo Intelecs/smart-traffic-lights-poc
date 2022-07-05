@@ -55,8 +55,8 @@ def traffic_state(red, yellow, green) -> None:
 def ped_traffic_state(red, yellow, green) -> None:
     if is_raspberry:
         GPIO.output(PED_RED_PIN, red)
-        GPIO.output(PED_GREEN_PIN, yellow)
-        GPIO.output(PED_YELLOW_PIN, green)
+        GPIO.output(PED_YELLOW_PIN, yellow)
+        GPIO.output(PED_GREEN_PIN, green)
 
 
 def traffic_light_vehicles(delay: int = 10):
