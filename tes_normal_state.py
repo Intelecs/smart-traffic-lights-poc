@@ -20,7 +20,13 @@ try:
 
     import RPi.GPIO as GPIO
 
+    try:
+        GPIO.cleanup()
+    except Exception as e:
+        pass
+
     GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
     # GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     is_raspberry = True
 except Exception as e:
