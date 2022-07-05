@@ -22,6 +22,7 @@ import dlib
 import time
 from threading import Thread
 import re,uuid
+import nmap
 mac=':'.join(re.findall('..', '%012x' % uuid.getnode()))
 
 
@@ -81,8 +82,17 @@ CLASSES = [
 ]
 
 
+ip_address = local_ip.split(".")[:-1]
+ip_address = ".".join(ip_address) + ".0-255"
+
+nmap_scanner = nmap.PortScanner()
+scan_range = nmap_scanner.scan(hosts=ip_address, arguments="-p 8000 --open")
+ip_address = None
+if len(scan_range) > 0:
+    ip_address = list(scan_range["scan"].keys())[0]
+
 async def violation_api(image):
-    url = f"http://{local_ip}:8000/remote"
+    url = f"http://{ip_address}:8000/remote"
     headers = {"Content-Type": "application/json"}
     data = {"image": image, "remote_mac": mac}
     try:
