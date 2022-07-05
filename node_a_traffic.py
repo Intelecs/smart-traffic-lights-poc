@@ -155,7 +155,7 @@ def traffic_light_pedestrian(delay: int = 10):
     ped_traffic_state(1, 0, 0)
 
     payload = {
-        "pedestrian": True,
+        "pedestrian": "true",
         "traffic_light_pedestrian": "RED"
     }
     ws = create_connection("ws://" + ip_address + ":8000/ws")
@@ -170,7 +170,7 @@ def traffic_light_pedestrian(delay: int = 10):
     time.sleep(delay)
 
     payload = {
-        "pedestrian": True,
+        "pedestrian": "true",
         "traffic_light_pedestrian": "YELLOW"
     }
     ws = create_connection("ws://" + ip_address + ":8000/ws")
@@ -183,7 +183,7 @@ def traffic_light_pedestrian(delay: int = 10):
     time.sleep(delay)
 
     payload = {
-        "pedestrian": True,
+        "pedestrian": "true",
         "traffic_light_pedestrian": "GREEN"
     }
     ws = create_connection("ws://" + ip_address + ":8000/ws")
@@ -270,7 +270,7 @@ def run():
                         #
                         payload = {
                             "traffic_light_vehicles": "RED",
-                            "vehicle_stop": True
+                            "vehicle_stop": "true"
                         }
                         ws = create_connection("ws://" + ip_address + ":8000/ws")
                         ws.send(str(payload))
