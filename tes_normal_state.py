@@ -41,7 +41,7 @@ try:
     while True:
         button_state = GPIO.input(BUTTON)
         logger.info("Button state: %s", button_state)
-        if GPIO.input(BUTTON) == GPIO.HIGH:
+        if GPIO.input(BUTTON) == GPIO.LOW:
             print('Button pressed')
             logger.info("Sending SIGNALS To other juction")
             counter = 0
