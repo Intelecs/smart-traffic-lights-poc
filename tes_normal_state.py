@@ -20,10 +20,10 @@ try:
 
     import RPi.GPIO as GPIO
 
-    try:
-        GPIO.cleanup()
-    except Exception as e:
-        pass
+    # try:
+    #     GPIO.cleanup()
+    # except Exception as e:
+    #     pass
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
