@@ -200,5 +200,8 @@ def run():
             # ped_traffic_state(0, 0, 0)
     except KeyboardInterrupt as e:
         logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
+    except Exception as e:
+        logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
     finally:
+
         GPIO.cleanup()
