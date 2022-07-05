@@ -96,6 +96,9 @@ def traffic_normal(delay = 10):
     # ped_traffic_state(1, 0, 0)
     time.sleep(delay)
 
+    traffic_state(0, 1, 0)
+    time.sleep(delay)
+
 
 
 def run_normal_state(delay=10):
