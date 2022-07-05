@@ -153,13 +153,44 @@ def traffic_light_vehicles(delay: int = 10):
 def traffic_light_pedestrian(delay: int = 10):
     logger.info("Should open Send RED Signal to Junction A")
     ped_traffic_state(1, 0, 0)
+
+    payload = {
+        "pedestrian": True,
+        "traffic_light_pedestrian": "RED"
+    }
+    ws = create_connection("ws://" + ip_address + ":8000/ws")
+    if is_connected:
+        ws.send(str(payload))
+    else:
+        ws = create_connection("ws://" + ip_address + ":8000/ws")
     time.sleep(delay)
     logger.info("Should open Send YELLOW Signal to Junction A")
+
     ped_traffic_state(0, 1, 0)
     time.sleep(delay)
+
+    payload = {
+        "pedestrian": True,
+        "traffic_light_pedestrian": "YELLOW"
+    }
+    ws = create_connection("ws://" + ip_address + ":8000/ws")
+    if is_connected:
+        ws.send(str(payload))
+    else:
+        ws = create_connection("ws://" + ip_address + ":8000/ws")
     logger.info("Should open Send GREEN Signal to Junction A")
     ped_traffic_state(0, 0, 1)
     time.sleep(delay)
+
+    payload = {
+        "pedestrian": True,
+        "traffic_light_pedestrian": "GREEN"
+    }
+    ws = create_connection("ws://" + ip_address + ":8000/ws")
+    if is_connected:
+        ws.send(str(payload))
+    else:
+        ws = create_connection("ws://" + ip_address + ":8000/ws")
 
 
 MASTER = True
@@ -232,6 +263,13 @@ def run():
                         logger.info("Do something...")
                         # traffic_state(1, 0, 0)  # stop the vehicles
                         #
+                        payload = {
+                            "traffic_light_vehicles": "RED",
+                            "vehicle_stop": True
+                        }
+                        ws = create_connection("ws://" + ip_address + ":8000/ws")
+                        ws.send(str(payload))
+                    
                         traffic_state(1, 0, 0)
                         time.sleep(5)
                         traffic_light_pedestrian()
