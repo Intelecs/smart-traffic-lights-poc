@@ -170,6 +170,7 @@ def traffic_normal(delay=10):
     ped_traffic_state(0, 0, 1)
     payload = {"traffic_light_vehicles": "RED", "traffic_light_pedestrian": "GREEN"}
 
+    ws = create_connection("ws://" + ip_address + ":8000/ws")
     if is_connected:
         ws.send(str(payload))
     else:
