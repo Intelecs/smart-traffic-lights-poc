@@ -20,7 +20,7 @@ try:
     import RPi.GPIO as GPIO
 
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     is_raspberry = True
 except Exception as e:
     logger.error(f"Not running on Raspberry Pi {e}")
@@ -29,7 +29,7 @@ except Exception as e:
 try:
     logger.info("Starting Traffic Lights threading...")
     while True:
-        if GPIO.input(BUTTON) == GPIO.LOW:
+        if GPIO.input(BUTTON) == GPIO.HIGH:
             print('Button pressed')
             logger.info("Sending SIGNALS To other juction")
             counter = 0
