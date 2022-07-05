@@ -85,18 +85,19 @@ def traffic_light_pedestrian(delay: int = 10):
 
 def traffic_normal(delay = 10):
     traffic_state(1, 0, 0)
-    # ped_traffic_state(0, 0, 1)
+    ped_traffic_state(0, 0, 1)
     time.sleep(delay)
 
     traffic_state(0, 1, 0)
-    # ped_traffic_state(0, 1, 0)
+    ped_traffic_state(0, 1, 0)
     time.sleep(delay)
 
     traffic_state(0, 0, 1)
-    # ped_traffic_state(1, 0, 0)
+    ped_traffic_state(1, 0, 0)
     time.sleep(delay)
 
     traffic_state(0, 1, 0)
+    ped_traffic_state(0, 1, 0)
     time.sleep(delay)
 
 
