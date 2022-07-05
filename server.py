@@ -62,8 +62,9 @@ async def websocket_endpoint(websocket):
     while True:
         await websocket.send_text("ping")
         received = await websocket.receive_text()
-        received_json = json.loads(received)
-        print(received_json)
+        # received_json = json.loads(received)
+        print(received)
+        # Received commands can go here
         await asyncio.sleep(1)
 
 
