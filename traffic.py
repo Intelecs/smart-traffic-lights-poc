@@ -459,8 +459,8 @@ if __name__ == "__main__":
             )
 
             y_max, x_max, channels = frame.shape
-
-            if centroid[2] > 500 and centroid[3] > 600:
+            if True:
+            # if centroid[2] > 500 and centroid[3] > 600:
                 # pass
                 logger.info("[INFO] Vehicle is out of the frame")
                 if is_raspberry:
