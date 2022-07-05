@@ -1,3 +1,4 @@
+import re
 import time
 
 import os, sys
@@ -72,20 +73,27 @@ def on_close(ws, close_status_code, close_msg):
 def on_open(ws):
     print("Opened connection")
 
-server = websocket.enableTrace(True)
+# server = websocket.enableTrace(True)
 
 from websocket import create_connection
 
-# ws = websocket.WebSocketApp(
-#     "ws://" + ip_address + ":8000/ws",
-#     on_message=on_message,
-#     # on_close=on_close,
-#     # on_open=on_open,
-#     # on_error=on_error,
-# )
+ws = websocket.WebSocketApp(
+    "ws://" + ip_address + ":8000/ws",
+    on_message=on_message,
+    on_close=on_close,
+    on_open=on_open,
+    on_error=on_error,
+)
 
-ws = create_connection(
-    "ws://" + ip_address + ":8000/ws")
+def run_ws_client():
+    ws.run_forever(dispatcher=rel)
+    rel.signal(2, rel.abort)
+    rel.dispatch()
+
+threading.Thread(target=run_ws_client, daemon=True).start()
+
+# ws = create_connection(
+#     "ws://" + ip_address + ":8000/ws")
 
 # ws.run_forever(dispatcher=rel)
 # rel.signal(2, rel.abort)
