@@ -90,10 +90,10 @@ def run_ws_client():
     rel.signal(2, rel.abort)
     rel.dispatch()
 
-threading.Thread(target=run_ws_client, daemon=True).start()
+# threading.Thread(target=run_ws_client, daemon=True).start()
 
-# ws = create_connection(
-#     "ws://" + ip_address + ":8000/ws")
+ws = create_connection(
+    "ws://" + ip_address + ":8000/ws")
 
 # ws.run_forever(dispatcher=rel)
 # rel.signal(2, rel.abort)
