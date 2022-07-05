@@ -13,7 +13,7 @@ import math
 import json
 import base64
 from utils.utils import get_logger
-from device.TrafficLights import traffic_light
+from device.TrafficLights import traffic_light_vehicles, traffic_light_pedestrian
 import asyncio
 from vidgear.gears import VideoGear, PiGear
 import requests
