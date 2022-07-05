@@ -20,7 +20,7 @@ try:
     import RPi.GPIO as GPIO
 
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     is_raspberry = True
 except Exception as e:
     logger.error(f"Not running on Raspberry Pi {e}")
@@ -34,6 +34,7 @@ try:
             logger.info("Sending SIGNALS To other juction")
             counter = 0
             while counter < 61:
+                logger.info(f"count {counter}")
                 if counter == 60:
                     traffic_state(1, 0, 0)  # stop the vehicles
                     traffic_light_pedestrian()
