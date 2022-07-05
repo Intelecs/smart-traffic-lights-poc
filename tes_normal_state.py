@@ -45,16 +45,21 @@ try:
             print('Button pressed')
             logger.info("Sending SIGNALS To other juction")
             counter = 0
-            while counter < 2:
+            while counter < 61:
                 logger.info(f"count {counter}")
                 if counter == 60:
                     logger.info("Do something...")
                     # traffic_state(1, 0, 0)  # stop the vehicles
+                    # 
+                    traffic_state(1, 0, 0)
+                    time.sleep(5)
+                    traffic_light_pedestrian()
 
                     # traffic_light_pedestrian()
+                    
                 time.sleep(1)
                 counter += 1
-        # traffic_normal()
+        traffic_normal()
         # ped_traffic_state(1, 1, 1)
         # traffic_light_pedestrian()
         # ped_traffic_state(0, 0, 0)
