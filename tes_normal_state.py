@@ -51,7 +51,7 @@ try:
                 counter += 1
         # traffic_normal()
         # ped_traffic_state(1, 1, 1)
-        time.sleep(1)
+        traffic_light_pedestrian()
         # ped_traffic_state(0, 0, 0)
 except KeyboardInterrupt as e:
     logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
