@@ -9,6 +9,7 @@ from device.TrafficLights import (
     run_normal_state,
     traffic_light_pedestrian,
     traffic_state,
+    traffic_normal
 )
 
 is_raspberry = True
@@ -35,7 +36,7 @@ try:
                     traffic_light_pedestrian()
                 time.sleep(1)
                 counter += 1
-        run_normal_state()
+        traffic_normal()
 except KeyboardInterrupt as e:
     logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
     GPIO.cleanup()
