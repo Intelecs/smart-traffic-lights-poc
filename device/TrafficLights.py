@@ -78,14 +78,14 @@ server = websocket.enableTrace(True)
 ws = websocket.WebSocketApp(
     "ws://" + ip_address + ":8000/ws",
     on_message=on_message,
-    on_close=on_close,
-    on_open=on_open,
-    on_error=on_error,
+    # on_close=on_close,
+    # on_open=on_open,
+    # on_error=on_error,
 )
 
-ws.run_forever(dispatcher=rel)
-rel.signal(2, rel.abort)
-rel.dispatch()
+# ws.run_forever(dispatcher=rel)
+# rel.signal(2, rel.abort)
+# rel.dispatch()
 
 
 BUTTON = 20
@@ -171,6 +171,8 @@ def traffic_normal(delay=10):
 def run():
     try:
         logger.info("Starting Traffic Lights threading...")
+        message = ws.recv()
+        print(message)
         while True:
             button_state = GPIO.input(BUTTON)
             logger.info("Button state: %s", button_state)
