@@ -1,9 +1,10 @@
 from utils.utils import get_logger
 import socket
 import nmap
+
 # import asyncio
 import websocket
-import rel 
+import rel
 
 logger = get_logger(name=__name__)
 
@@ -12,9 +13,12 @@ sock.connect(("8.8.8.8", 8000))
 local_ip = sock.getsockname()[0]
 sock.close()
 
-print(local_ip)
+
+ip_address = local_ip.split(".")[:-1]
+ip_address = ".".join(ip_address) + ".0-255"
+
 nmap_scanner = nmap.PortScanner()
-scan_range = nmap_scanner.scan(hosts="192.168.43.0-100", arguments="-p 8000 --open")
+scan_range = nmap_scanner.scan(hosts=ip_address, arguments="-p 8000 --open")
 
 ip_address = None
 if len(scan_range) > 0:
@@ -50,8 +54,6 @@ if __name__ == "__main__":
         on_open=on_open,
         on_error=on_error,
     )
-
-    
 
     ws.run_forever(dispatcher=rel)
     rel.signal(2, rel.abort)

@@ -1,4 +1,4 @@
-import os,sys
+import os, sys
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
@@ -26,8 +26,9 @@ from threading import Thread
 is_raspberry = True
 logger = get_logger(name="traffic_observer")
 try:
-    
+
     import RPi.GPIO as GPIO
+
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
     is_raspberry = True
@@ -36,7 +37,6 @@ except Exception as e:
     is_raspberry = False
 
 config_file = "configs/traffic_observer.json"
-
 
 
 config = None
@@ -54,24 +54,42 @@ sock.close()
 
 conf = config
 
-CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
-    "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
-    "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
-    "sofa", "train", "tvmonitor"]
+CLASSES = [
+    "background",
+    "aeroplane",
+    "bicycle",
+    "bird",
+    "boat",
+    "bottle",
+    "bus",
+    "car",
+    "cat",
+    "chair",
+    "cow",
+    "diningtable",
+    "dog",
+    "horse",
+    "motorbike",
+    "person",
+    "pottedplant",
+    "sheep",
+    "sofa",
+    "train",
+    "tvmonitor",
+]
 
 
 async def violation_api(image):
     url = f"http://{local_ip}:8000/violations"
-    headers = {'Content-Type': 'application/json'}
-    data = {
-        "image": image
-    }
+    headers = {"Content-Type": "application/json"}
+    data = {"image": image}
     try:
         requests.post(url, json=data, headers=headers)
         logger.info(f"Violation sent to {url}")
     except Exception as e:
         logger.error(f"Error sending violation to {url}")
         logger.error(e)
+
 
 async def send_violation(image):
     asyncio.ensure_future(violation_api(image))
@@ -84,19 +102,18 @@ def traffic_lights():
             logger.info("Starting Trafiic Lights threading...")
             traffic_light()
         except Exception as e:
-            logger.error("Something went wrong with traffic lights {}".format(e), exc_info=True)
+            logger.error(
+                "Something went wrong with traffic lights {}".format(e), exc_info=True
+            )
             continue
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # Starting Raspberry Pi GPIO
     # Thread(target=traffic_lights).start()
 
-
-    net = cv2.dnn.readNetFromCaffe(conf["prototxt_path"],
-        conf["model_path"])
+    net = cv2.dnn.readNetFromCaffe(conf["prototxt_path"], conf["model_path"])
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
     if is_raspberry:
@@ -105,14 +122,15 @@ if __name__ == '__main__':
     else:
         pass
     stream = VideoGear(source=0, stabilize=False, logging=True).start()
-    
+
     # stream = cv2.VideoCapture(0)
 
     H = None
     W = None
 
-    ct = CentroidTracker(maxDisappeared=conf["max_disappear"],
-        maxDistance=conf["max_distance"])
+    ct = CentroidTracker(
+        maxDisappeared=conf["max_disappear"], maxDistance=conf["max_distance"]
+    )
     trackers = []
     trackable_objects = {}
 
@@ -121,11 +139,11 @@ if __name__ == '__main__':
     logFile = None
 
     points = [("A", "B"), ("B", "C"), ("C", "D")]
-    
+
     # fps = FPS().start()
 
     total_frames = 0
-   
+
     logFile = None
 
     points = [("A", "B"), ("B", "C"), ("C", "D")]
@@ -142,56 +160,47 @@ if __name__ == '__main__':
         if frame is None:
             break
 
-
         frame = imutils.resize(frame, width=conf["frame_width"])
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         if is_raspberry:
 
-                # Red
-                # cv2.circle(
-                #     frame, (30, 30), 20, (0,0,255), -1
-                # )
-                if GPIO.input(17) == GPIO.HIGH:
-                    cv2.circle(frame, (30, 30), 20, (0,0,255), -1)
+            # Red
+            # cv2.circle(
+            #     frame, (30, 30), 20, (0,0,255), -1
+            # )
+            if GPIO.input(17) == GPIO.HIGH:
+                cv2.circle(frame, (30, 30), 20, (0, 0, 255), -1)
 
-                    # cv2.circle(frame, (30, 130), 20, (0,128,0), -1)
-                else:
+                # cv2.circle(frame, (30, 130), 20, (0,128,0), -1)
+            else:
 
-                    cv2.circle(
-                    frame, (30, 30), 20, (128,128,128), -1
-                    )
-                
+                cv2.circle(frame, (30, 30), 20, (128, 128, 128), -1)
 
-                GREEN_PIN = 27
-                
-                YELLOW_PIN = 22
-                if GPIO.input(27) == GPIO.HIGH:
-                    # Yellow 
-                    cv2.circle(frame, (30, 80), 20, (51, 255, 249), -1)
+            GREEN_PIN = 27
 
-                    # cv2.circle(frame, (30, 30), 20, (0,0,255), -1)
-                else:
-                    cv2.circle(
-                    frame, (30, 80), 20, (128,128,128), -1
-                    )
-                
-                if GPIO.input(22) == GPIO.HIGH:
-                    # Green
-                    cv2.circle(frame, (30, 130), 20, (0,128,0), -1)
-                    # cv2.circle(frame, (30, 80), 20, (51, 255, 249), -1)
-                else:
-                    cv2.circle(
-                    frame, (30, 130), 20, (128,128,128), -1
-                    )
-                 
-        
+            YELLOW_PIN = 22
+            if GPIO.input(27) == GPIO.HIGH:
+                # Yellow
+                cv2.circle(frame, (30, 80), 20, (51, 255, 249), -1)
+
+                # cv2.circle(frame, (30, 30), 20, (0,0,255), -1)
+            else:
+                cv2.circle(frame, (30, 80), 20, (128, 128, 128), -1)
+
+            if GPIO.input(22) == GPIO.HIGH:
+                # Green
+                cv2.circle(frame, (30, 130), 20, (0, 128, 0), -1)
+                # cv2.circle(frame, (30, 80), 20, (51, 255, 249), -1)
+            else:
+                cv2.circle(frame, (30, 130), 20, (128, 128, 128), -1)
+
         # set frame dimensions if are empty
         if W is None or H is None:
             (H, W) = frame.shape[:2]
             # (H, W) = (480, 640)
             meterPerPixel = conf["distance"] / W
-        
+
         """ _summary_
         initialize our list of bounding box rectangles returned by
         either (1) our object detector or (2) the correlation trackers
@@ -213,21 +222,24 @@ if __name__ == '__main__':
         if total_frames % conf["track_object"] == 0:
 
             trackers = []
-            blob = cv2.dnn.blobFromImage(frame, size=(300, 300),
-                ddepth=cv2.CV_8U)
-            net.setInput(blob, scalefactor=1.0/127.5, mean=[127.5,
-                127.5, 127.5])
+            blob = cv2.dnn.blobFromImage(frame, size=(300, 300), ddepth=cv2.CV_8U)
+            net.setInput(blob, scalefactor=1.0 / 127.5, mean=[127.5, 127.5, 127.5])
             detections = net.forward()
 
             for i in np.arange(0, detections.shape[2]):
-                
+
                 confidence = detections[0, 0, i, 2]
 
                 if confidence > conf["confidence"]:
                     idx = int(detections[0, 0, i, 1])
-                    
 
-                    if CLASSES[idx] not in [ "bicycle", "bus", "car", "motorbike", "train"]:
+                    if CLASSES[idx] not in [
+                        "bicycle",
+                        "bus",
+                        "car",
+                        "motorbike",
+                        "train",
+                    ]:
                         continue
                     object_name = CLASSES[idx]
 
@@ -241,21 +253,32 @@ if __name__ == '__main__':
                     tracker
                     """
 
-                    text_size = cv2.getTextSize(object_name, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)[0]
+                    text_size = cv2.getTextSize(
+                        object_name, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1
+                    )[0]
                     text_width, text_height = text_size[0], text_size[1]
-
 
                     tracker = dlib.correlation_tracker()
                     rect = dlib.rectangle(startX, startY, endX, endY)
                     tracker.start_track(rgb, rect)
 
-                    cv2.rectangle(frame, (startX, startY + 20), (startX + text_width, startY + text_height),  (0, 255, 0), -1)
-                    cv2.putText(frame, object_name, (startX, startY + 20)
-                , cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1)
-                    tracker = {
-                        "tracker": tracker,
-                        "object_name": object_name
-                    }
+                    cv2.rectangle(
+                        frame,
+                        (startX, startY + 20),
+                        (startX + text_width, startY + text_height),
+                        (0, 255, 0),
+                        -1,
+                    )
+                    cv2.putText(
+                        frame,
+                        object_name,
+                        (startX, startY + 20),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.5,
+                        (0, 0, 0),
+                        1,
+                    )
+                    tracker = {"tracker": tracker, "object_name": object_name}
                     trackers.append(tracker)
 
         else:
@@ -265,7 +288,7 @@ if __name__ == '__main__':
                 tracker = _tracker["tracker"]
                 tracker.update(rgb)
                 pos = tracker.get_position()
-    
+
                 startX = int(pos.left())
                 startY = int(pos.top())
                 endX = int(pos.right())
@@ -300,21 +323,20 @@ if __name__ == '__main__':
                 2. if the centroid's x-coordinate is greater than the corresponding point then set the timestamp as current timestamp and set the position as the centroid's x-coordinate
                 """
 
-                
                 if to.direction > 0:
-                    if to.timestamp["A"] == 0 :
+                    if to.timestamp["A"] == 0:
 
                         if centroid[0] > conf["speed_estimation_zone"]["A"]:
                             to.timestamp["A"] = ts
                             to.position["A"] = centroid[0]
 
                     elif to.timestamp["B"] == 0:
-                        
+
                         if centroid[0] > conf["speed_estimation_zone"]["B"]:
                             to.timestamp["B"] = ts
                             to.position["B"] = centroid[0]
                     elif to.timestamp["C"] == 0:
-                        
+
                         if centroid[0] > conf["speed_estimation_zone"]["C"]:
                             to.timestamp["C"] = ts
                             to.position["C"] = centroid[0]
@@ -325,7 +347,7 @@ if __name__ == '__main__':
                             to.lastPoint = True
                 elif to.direction < 0:
 
-                    if to.timestamp["D"] == 0 :
+                    if to.timestamp["D"] == 0:
                         if centroid[0] < conf["speed_estimation_zone"]["D"]:
                             to.timestamp["D"] = ts
                             to.position["D"] = centroid[0]
@@ -356,7 +378,7 @@ if __name__ == '__main__':
                 # over the limit
                 """
                 if to.lastPoint and not to.estimated:
-                    
+
                     estimatedSpeeds = []
                     # loop over all the pairs of points and estimate the
                     # vehicle speed
@@ -388,11 +410,15 @@ if __name__ == '__main__':
 
             current_object = trackable_objects[objectID]
 
-            speed = 0 if to.speedKMPH is None or  math.isnan(to.speedKMPH) else int(to.speedKMPH)
-    
-            text = "SPEED {} Km/h".format('--')
+            speed = (
+                0
+                if to.speedKMPH is None or math.isnan(to.speedKMPH)
+                else int(to.speedKMPH)
+            )
+
+            text = "SPEED {} Km/h".format("--")
             # text = "OBJECT {}".format(current_object.objectID)
-            
+
             """ _summary_
             Look if the object has violated the speed limit
             """
@@ -403,34 +429,57 @@ if __name__ == '__main__':
                 pass
                 # cv2.polylines(frame, [np.array(area, np.int32)], True, (15,220,10), 2)
 
-
-
             text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)[0]
             text_width, text_height = text_size[0], text_size[1]
-            cv2.rectangle(frame, (centroid[0], centroid[1]), (centroid[2], centroid[3]), (0, 255, 0), 2)
+            cv2.rectangle(
+                frame,
+                (centroid[0], centroid[1]),
+                (centroid[2], centroid[3]),
+                (0, 255, 0),
+                2,
+            )
             # cv2.rectangle(frame, (centroid[0], centroid[1]),  (centroid[2] - 20, centroid[1] - 20), (0, 255, 0), -1)
-            cv2.rectangle(frame, (centroid[0], centroid[1]), (centroid[0] + text_width, centroid[1] + text_height),  (0, 255, 0), -1)
-            cv2.putText(frame, text, (centroid[0], centroid[1] + 10)
-                , cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1)
+            cv2.rectangle(
+                frame,
+                (centroid[0], centroid[1]),
+                (centroid[0] + text_width, centroid[1] + text_height),
+                (0, 255, 0),
+                -1,
+            )
+            cv2.putText(
+                frame,
+                text,
+                (centroid[0], centroid[1] + 10),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.5,
+                (0, 0, 0),
+                1,
+            )
 
             y_max, x_max, channels = frame.shape
-        
-            if centroid[2] > 500 and centroid[3] > 600: 
+
+            if centroid[2] > 500 and centroid[3] > 600:
                 # pass
                 logger.info("[INFO] Vehicle is out of the frame")
                 if is_raspberry:
-                    """ 
+                    """
                     _summary_ setting traffic lights on window
                     """
                     if GPIO.input(17) == GPIO.HIGH:
                         # speed_limit_violation = True
-                        cv2.putText(frame, f"TRAFFIC LIMIT VIOLATION BY object {current_object}", (x_max - 150, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1)
+                        cv2.putText(
+                            frame,
+                            f"TRAFFIC LIMIT VIOLATION BY object {current_object}",
+                            (x_max - 150, 30),
+                            cv2.FONT_HERSHEY_SIMPLEX,
+                            0.5,
+                            (0, 0, 255),
+                            1,
+                        )
                         _, buffer = cv2.imencode(".jpg", frame)
                         image = base64.b64encode(buffer).decode("utf-8")
                         asyncio.run(send_violation(image))
 
-            
-       
         if conf["display"]:
 
             cv2.imshow("Smart traffic Light System {}".format(local_ip), frame)
