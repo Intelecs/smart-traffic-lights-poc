@@ -2,7 +2,7 @@ import os, sys
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
-
+import json
 
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
@@ -62,7 +62,8 @@ async def websocket_endpoint(websocket):
     while True:
         await websocket.send_text("ping")
         received = await websocket.receive_text()
-        print(received)
+        received_json = json.loads(received)
+        print(received_json)
         await asyncio.sleep(1)
 
 
