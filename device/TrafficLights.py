@@ -32,7 +32,7 @@ PED_YELLOW_PIN = 23
 PED_RED_PIN = 25
 PED_GREEN_PIN = 24
 
-BUTTON = 20
+
 
 if is_raspberry:
     GPIO.setup(RED_PIN, GPIO.OUT)
@@ -42,7 +42,7 @@ if is_raspberry:
     GPIO.setup(PED_GREEN_PIN, GPIO.OUT)
     GPIO.setup(PED_YELLOW_PIN, GPIO.OUT)
 
-    GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    
 
 
 def traffic_state(red, yellow, green) -> None:

@@ -14,11 +14,13 @@ from device.TrafficLights import (
 
 is_raspberry = True
 logger = get_logger(name="traffic_observer")
+BUTTON = 20
 try:
 
     import RPi.GPIO as GPIO
 
     GPIO.setmode(GPIO.BCM)
+    GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     is_raspberry = True
 except Exception as e:
     logger.error(f"Not running on Raspberry Pi {e}")
@@ -27,7 +29,8 @@ except Exception as e:
 try:
     logger.info("Starting Traffic Lights threading...")
     while True:
-        if GPIO.input(20) == GPIO.HIGH:
+        if GPIO.input(BUTTON) == GPIO.HIGH:
+            print('Button pressed')
             logger.info("Sending SIGNALS To other juction")
             counter = 0
             while counter < 61:
