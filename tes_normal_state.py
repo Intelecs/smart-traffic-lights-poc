@@ -37,8 +37,10 @@ try:
             while counter < 61:
                 logger.info(f"count {counter}")
                 if counter == 60:
-                    traffic_state(1, 0, 0)  # stop the vehicles
-                    traffic_light_pedestrian()
+                    pass
+                    # traffic_state(1, 0, 0)  # stop the vehicles
+
+                    # traffic_light_pedestrian()
                 time.sleep(1)
                 counter += 1
         # traffic_normal()
