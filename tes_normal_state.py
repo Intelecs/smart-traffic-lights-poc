@@ -45,7 +45,7 @@ try:
             print('Button pressed')
             logger.info("Sending SIGNALS To other juction")
             counter = 0
-            while counter < 61:
+            while counter < 2:
                 logger.info(f"count {counter}")
                 if counter == 60:
                     logger.info("Do something...")
