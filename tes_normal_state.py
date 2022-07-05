@@ -27,7 +27,7 @@ try:
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
-    # GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     is_raspberry = True
 except Exception as e:
     logger.error(f"Not running on Raspberry Pi {e}")
