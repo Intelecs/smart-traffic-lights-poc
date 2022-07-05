@@ -244,13 +244,18 @@ def traffic_normal(delay=10):
 
 
 def run():
+    
     try:
+        ws = create_connection("ws://" + ip_address + ":8000/ws")
         logger.info("Starting Traffic Lights threading...")
-        if is_connected:
-            message = ws.recv()
-
-        print(message)
+        
         while True:
+            try:
+
+                message = ws.recv()
+                print(message)
+            except Exception as e:
+                pass
             button_state = GPIO.input(BUTTON)
             logger.info("Button state: %s", button_state)
             if GPIO.input(BUTTON) == GPIO.LOW:
